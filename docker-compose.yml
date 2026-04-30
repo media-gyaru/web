@@ -6,9 +6,9 @@ services:
       - "8080:80"
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: nif_db
-      WORDPRESS_DB_USER: nif_user
-      WORDPRESS_DB_PASSWORD: nif0430
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
       - ./wordpress:/var/www/html
     depends_on:
@@ -18,10 +18,10 @@ services:
     image: mysql:8.0
     container_name: gyaru_db
     environment:
-      MYSQL_DATABASE: nif_db
-      MYSQL_USER: nif_user
-      MYSQL_PASSWORD: nif0430
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
 
@@ -32,8 +32,8 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: db
-      PMA_USER: wordpress
-      PMA_PASSWORD: wordpress
+      PMA_USER: ${WORDPRESS_DB_USER}
+      PMA_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     depends_on:
       - db
 
