@@ -1,0 +1,23 @@
+.env
+
+# WordPress core
+wordpress/*
+!wordpress/wp-content/
+wordpress/wp-content/*
+!wordpress/wp-content/themes/
+!wordpress/wp-content/plugins/
+!wordpress/wp-content/mu-plugins/
+
+# uploads
+wordpress/wp-content/uploads/
+wordpress/wp-content/cache/
+wordpress/wp-content/upgrade/
+
+# local config
+wordpress/wp-config.php
+
+# dependencies
+node_modules/
+vendor/
+
+.DS_Store
