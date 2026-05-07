@@ -138,7 +138,7 @@ function atnif_customize_register($wp_customize) {
 
     $text_fields = array(
         'story' => array(
-            'story_text1' => array(__('Story text', 'atnif-figma'), 'textarea'),
+            'story_text' => array(__('Story text', 'atnif-figma'), 'textarea'),
             'scenario_title1' => array(__('Scenario title', 'atnif-figma'), 'text'),
             'scenario_text1' => array(__('Scenario text', 'atnif-figma'), 'textarea'),
             'scenario_title2' => array(__('Scenario title2', 'atnif-figma'), 'text'),
