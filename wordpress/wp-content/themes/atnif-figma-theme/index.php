@@ -1,0 +1,183 @@
+<?php
+get_header();
+?>
+
+<main id="main" class="site-main">
+    <section class="hero" style="background-image: url('<?php echo esc_url(atnif_mod('hero_background')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
+        <div class="hero__media">
+            <?php
+            $hero_image = atnif_image_mod('hero_image', 'hero__image', get_bloginfo('name'));
+            if ($hero_image) {
+                echo $hero_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+            ?>
+        </div>
+    </section>
+
+    <section id="story" class="section section--panel" aria-labelledby="story-heading">
+        <div class="section__inner section__inner--story">
+            <div class="content-block">
+                <h1 id="story-heading" class="section-heading">
+                    <span>
+                        <span class="section-heading__en">Story</span>
+                        <span class="section-heading__ja">あらすじ</span>
+                    </span>
+                </h1>
+                <p class="body-copy"><?php echo atnif_textarea(atnif_mod('story_text')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+            </div>
+
+            <article class="scenario" data-atnif-slider>
+                <h2 class="scenario__title" data-slider-title><?php echo esc_html(atnif_mod('scenario_title')); ?></h2>
+                <div class="scenario__body">
+                    <button class="arrow-button arrow-button--prev" type="button" data-slider-prev>
+                        <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif-figma'); ?></span>
+                    </button>
+                    <p class="scenario__text" data-slider-text><?php echo atnif_textarea(atnif_mod('scenario_text')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <button class="arrow-button" type="button" data-slider-next>
+                        <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif-figma'); ?></span>
+                    </button>
+                </div>
+                <div class="pager" aria-hidden="true">
+                    <button class="pager__dot is-active" type="button" data-slider-dot="0"></button>
+                    <button class="pager__dot" type="button" data-slider-dot="1"></button>
+                    <button class="pager__dot" type="button" data-slider-dot="2"></button>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="character" class="section section--paper" aria-labelledby="character-heading">
+        <div class="section__inner">
+            <h2 id="character-heading" class="section-heading">
+                <span>
+                    <span class="section-heading__en">Character</span>
+                    <span class="section-heading__ja">登場人物</span>
+                </span>
+            </h2>
+
+            <article class="character">
+                <div class="character__image-wrap">
+                    <?php
+                    $character_image = atnif_image_mod('character_image', 'character__image', atnif_mod('character_name'));
+                    if ($character_image) {
+                        echo $character_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    }
+                    ?>
+                </div>
+                <div class="character__details">
+                    <div class="character__name">
+                        <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name')); ?></span>
+                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_ruby')); ?></span>
+                    </div>
+                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                </div>
+                <div class="character__select">
+                    <p class="character__select-label">select</p>
+                    <div class="character__swatches" aria-hidden="true">
+                        <button class="character__swatch is-active" type="button"></button>
+                        <button class="character__swatch" type="button"></button>
+                        <button class="character__swatch" type="button"></button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="gallery" class="section section--panel" aria-labelledby="gallery-heading">
+        <div class="section__inner">
+            <h2 id="gallery-heading" class="section-heading">
+                <span>
+                    <span class="section-heading__en">Gallery</span>
+                    <span class="section-heading__ja">写真展示</span>
+                </span>
+            </h2>
+            <div class="gallery-grid">
+                <?php for ($i = 1; $i <= 6; $i++) : ?>
+                    <div class="gallery-grid__item">
+                        <?php
+                        $gallery_image = atnif_image_mod('gallery_' . $i, '', sprintf(__('Gallery image %d', 'atnif-figma'), $i));
+                        if ($gallery_image) {
+                            echo $gallery_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        } elseif ($i === 1) {
+                            esc_html_e('写真', 'atnif-figma');
+                        }
+                        ?>
+                    </div>
+                <?php endfor; ?>
+            </div>
+        </div>
+    </section>
+
+    <section id="special" class="section section--paper" aria-labelledby="special-heading">
+        <div class="section__inner">
+            <h2 id="special-heading" class="section-heading">
+                <span>
+                    <span class="section-heading__en">Special</span>
+                    <span class="section-heading__ja">おたのしみ</span>
+                </span>
+            </h2>
+            <div class="special">
+                <div class="special__banners">
+                    <?php for ($i = 1; $i <= 2; $i++) : ?>
+                        <?php $banner_url = atnif_mod('special_banner_' . $i . '_url'); ?>
+                        <?php if ($banner_url) : ?>
+                            <a class="special__banner" href="<?php echo esc_url($banner_url); ?>">
+                                <?php echo esc_html(atnif_mod('special_banner_' . $i . '_label')); ?>
+                            </a>
+                        <?php else : ?>
+                            <div class="special__banner"><?php echo esc_html(atnif_mod('special_banner_' . $i . '_label')); ?></div>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                </div>
+                <div class="special__content">
+                    <h3 class="special__title"><?php echo esc_html(atnif_mod('special_title')); ?></h3>
+                    <p class="special__copy"><?php echo atnif_textarea(atnif_mod('special_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <div class="special__links">
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('x_url')); ?>" target="_blank" rel="noopener">☆　X（旧Twitter）</a>
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('tiktok_url')); ?>" target="_blank" rel="noopener">☆　TikTok</a>
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('youtube_url')); ?>" target="_blank" rel="noopener">☆　Youtube</a>
+                    </div>
+                </div>
+                <?php
+                $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif-figma'));
+                if ($special_image) {
+                    echo $special_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                }
+                ?>
+            </div>
+        </div>
+    </section>
+
+    <section id="game" class="section section--panel" aria-labelledby="game-heading">
+        <div class="section__inner">
+            <h2 id="game-heading" class="section-heading">
+                <span>
+                    <span class="section-heading__en">Game</span>
+                    <span class="section-heading__ja">ゲーム</span>
+                </span>
+            </h2>
+            <article class="game">
+                <div class="game__media"><?php echo esc_html(atnif_mod('game_status')); ?></div>
+                <div class="game__content">
+                    <h3 class="game__title"><?php echo esc_html(atnif_mod('game_title')); ?></h3>
+                    <?php $game_url = atnif_mod('game_link_url'); ?>
+                    <?php if ($game_url) : ?>
+                        <a class="game__link" href="<?php echo esc_url($game_url); ?>"><?php echo esc_html(atnif_mod('game_link_label')); ?></a>
+                    <?php else : ?>
+                        <span class="game__link"><?php echo esc_html(atnif_mod('game_link_label')); ?></span>
+                    <?php endif; ?>
+                    <p class="game__meta"><?php echo atnif_textarea(atnif_mod('game_meta')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <?php
+                    $game_badge = atnif_image_mod('game_badge', 'game__badge', __('Game badge', 'atnif-figma'));
+                    if ($game_badge) {
+                        echo $game_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    }
+                    ?>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<?php
+get_footer();
