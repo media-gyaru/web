@@ -26,13 +26,31 @@ get_header();
                 <p class="body-copy"><?php echo atnif_textarea(atnif_mod('story_text')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
             </div>
 
+            <?php
+            $scenario_items = array(
+                array(
+                    'title' => atnif_mod('scenario_title1'),
+                    'text' => atnif_mod('scenario_text1'),
+                ),
+                array(
+                    'title' => atnif_mod('scenario_title2'),
+                    'text' => atnif_mod('scenario_text2'),
+                ),
+                array(
+                    'title' => atnif_mod('scenario_title3'),
+                    'text' => atnif_mod('scenario_text3'),
+                ),
+            );
+            ?>
+
             <article class="scenario" data-atnif-slider>
-                <h2 class="scenario__title" data-slider-title><?php echo esc_html(atnif_mod('scenario_title')); ?></h2>
+                <script type="application/json" data-slider-items><?php echo wp_json_encode($scenario_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
+                <h2 class="scenario__title" data-slider-title><?php echo esc_html(atnif_mod('scenario_title1')); ?></h2>
                 <div class="scenario__body">
                     <button class="arrow-button arrow-button--prev" type="button" data-slider-prev>
                         <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif-figma'); ?></span>
                     </button>
-                    <p class="scenario__text" data-slider-text><?php echo atnif_textarea(atnif_mod('scenario_text')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <p class="scenario__text" data-slider-text><?php echo atnif_textarea(atnif_mod('scenario_text1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                     <button class="arrow-button" type="button" data-slider-next>
                         <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif-figma'); ?></span>
                     </button>
@@ -66,7 +84,7 @@ get_header();
                 </div>
                 <div class="character__details">
                     <div class="character__name">
-                        <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name')); ?></span>
+                        <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name1')); ?></span>
                         <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_ruby')); ?></span>
                     </div>
                     <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
