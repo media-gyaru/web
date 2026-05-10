@@ -101,7 +101,7 @@ get_header();
         </div>
     </section>
 
-    <section id="gallery" class="section section--panel" aria-labelledby="gallery-heading">
+    <section id="gallery" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/gallery-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="gallery-heading">
         <div class="section__inner">
             <h2 id="gallery-heading" class="section-heading">
                 <span>
@@ -126,7 +126,7 @@ get_header();
         </div>
     </section>
 
-    <section id="special" class="section section--paper" aria-labelledby="special-heading">
+    <section id="special" class="section section--paper" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/special-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="special-heading">
         <div class="section__inner">
             <h2 id="special-heading" class="section-heading">
                 <span>
@@ -166,7 +166,7 @@ get_header();
         </div>
     </section>
 
-    <section id="game" class="section section--panel" aria-labelledby="game-heading">
+    <section id="game" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/game-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="game-heading">
         <div class="section__inner">
             <h2 id="game-heading" class="section-heading">
                 <span>
