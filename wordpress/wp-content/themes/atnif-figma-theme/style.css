@@ -215,11 +215,11 @@ select {
 
 .section-heading__en {
   display: block;
-  overflow: hidden;
+  overflow: visible;
+  padding-bottom: 4px;
   font-size: 48px;
   font-weight: 500;
-  line-height: 48px;
-  text-overflow: ellipsis;
+  line-height: 56px;
   white-space: nowrap;
 }
 
@@ -700,8 +700,9 @@ select {
   }
 
   .section-heading__en {
+    padding-bottom: 3px;
     font-size: 36px;
-    line-height: 40px;
+    line-height: 44px;
   }
 
   .body-copy,
