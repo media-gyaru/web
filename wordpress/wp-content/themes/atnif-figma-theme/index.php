@@ -14,7 +14,7 @@ get_header();
         </div>
     </section>
 
-    <section id="story" class="section section--panel" aria-labelledby="story-heading">
+    <section id="story" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/story-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="story-heading">
         <div class="section__inner section__inner--story">
             <div class="content-block">
                 <h1 id="story-heading" class="section-heading">
