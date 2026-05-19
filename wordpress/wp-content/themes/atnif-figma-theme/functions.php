@@ -70,7 +70,7 @@ function atnif_default($key) {
         'x_url' => 'https://x.com/_atnif',
         'tiktok_url' => 'https://www.tiktok.com/@nif06010',
         'youtube_url' => 'https://www.youtube.com/@%E3%81%82%E3%81%A3%E3%81%A8%E3%81%AB%E3%81%B5',
-        'special_image' => atnif_asset_url('images/mascot.png'),
+        'special_image' => atnif_asset_url('images/special-mascot.png'),
         'game_title' => '@Nif',
         'game_status' => '鋭意制作中',
         'game_link_label' => 'ノベルゲームコレクションにて公開予定',

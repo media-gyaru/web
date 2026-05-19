@@ -64,7 +64,7 @@ get_header();
         </div>
     </section>
 
-    <section id="character" class="section section--paper" aria-labelledby="character-heading">
+    <section id="character" class="section section--paper" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/character-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="character-heading">
         <div class="section__inner">
             <h2 id="character-heading" class="section-heading">
                 <span>
@@ -151,10 +151,10 @@ get_header();
                     <h3 class="special__title"><?php echo esc_html(atnif_mod('special_title')); ?></h3>
                     <p class="special__copy"><?php echo atnif_textarea(atnif_mod('special_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                     <div class="special__links">
-                        <a class="text-link" href="<?php echo esc_url(atnif_mod('x_url')); ?>" target="_blank" rel="noopener">☆　X（旧Twitter）</a>
-                        <a class="text-link" href="<?php echo esc_url(atnif_mod('tiktok_url')); ?>" target="_blank" rel="noopener">☆　TikTok</a>
-                        <a class="text-link" href="<?php echo esc_url(atnif_mod('youtube_url')); ?>" target="_blank" rel="noopener">☆　Youtube</a>
-                    </div>
+                                        <a class="text-link" href="<?php echo esc_url(atnif_mod('x_url')); ?>" target="_blank" rel="noopener">X（旧Twitter）</a>
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('tiktok_url')); ?>" target="_blank" rel="noopener">TikTok</a>
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('youtube_url')); ?>" target="_blank" rel="noopener">Youtube</a>    
+                </div>
                 </div>
                 <?php
                 $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif-figma'));

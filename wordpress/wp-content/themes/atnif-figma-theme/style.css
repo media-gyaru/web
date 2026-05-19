@@ -494,7 +494,17 @@ select {
     width: 247px;
 }
 
-.special__title,
+.special__title {
+    margin: 0 0 12px;
+    overflow: hidden;
+    color: var(--atnif-blue);
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 40px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .game__title {
     margin: 0 0 12px;
     color: var(--atnif-indigo);
@@ -505,21 +515,26 @@ select {
 
 .special__copy {
     margin: 0 0 24px;
-    color: var(--atnif-indigo);
+    overflow: hidden;
+    color: var(--atnif-blue);
     font-size: 16px;
     line-height: 28px;
+    text-overflow: ellipsis;
     white-space: pre-line;
 }
 
 .special__links {
     display: grid;
     gap: 10px;
-    width: 160px;
+    width: 126px;
 }
 
 .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     overflow: hidden;
-    color: var(--atnif-indigo);
+    color: var(--atnif-blue);
     font-size: 16px;
     line-height: 24px;
     text-decoration: underline;
@@ -527,14 +542,23 @@ select {
     white-space: nowrap;
 }
 
+.text-link::before {
+    display: block;
+    flex: 0 0 19px;
+    width: 19px;
+    height: 24px;
+    background: url("assets/images/text-link-icon.svg") center / contain
+        no-repeat;
+    content: "";
+}
+
 .special__image {
     position: absolute;
     right: 0;
-    top: -5px;
-    width: 253px;
-    height: 273px;
+    top: 66px;
+    width: 202px;
+    height: 202px;
     object-fit: cover;
-    object-position: 50% 38%;
 }
 
 .game {
@@ -787,7 +811,7 @@ select {
 
     .special__image {
         position: static;
-        width: min(253px, 100%);
+        width: min(202px, 100%);
         height: auto;
         margin: 0 auto;
     }
