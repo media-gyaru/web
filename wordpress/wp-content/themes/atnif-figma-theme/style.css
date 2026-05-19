@@ -91,7 +91,7 @@ select {
     place-items: center;
     width: 213px;
     height: 71px;
-    background: var(--atnif-panel);
+    transform: translateY(-16px);
     color: #000000;
     font-size: 12px;
     line-height: 16px;

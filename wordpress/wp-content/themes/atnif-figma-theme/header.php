@@ -11,15 +11,7 @@
     <header class="site-header" style="background-image: url('<?php echo esc_url(atnif_mod('hero_background')); ?>');">
         <div class="site-header__inner">
             <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
-                <?php
-                if (has_custom_logo()) {
-                    echo wp_get_attachment_image((int) get_theme_mod('custom_logo'), 'full', false, array(
-                        'alt' => get_bloginfo('name'),
-                    ));
-                } else {
-                    echo esc_html__('ロゴ', 'atnif-figma');
-                }
-                ?>
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
             </a>
             <nav class="site-nav" aria-label="<?php esc_attr_e('Primary navigation', 'atnif-figma'); ?>">
                 <ul>
