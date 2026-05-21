@@ -105,7 +105,7 @@ function atnif_image_mod($key, $class = '', $alt = '') {
 }
 
 function atnif_textarea($text) {
-    return nl2br(esc_html($text));
+    return esc_html($text);
 }
 
 function atnif_sanitize_url_or_empty($value) {

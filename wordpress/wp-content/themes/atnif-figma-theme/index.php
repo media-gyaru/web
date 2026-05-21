@@ -76,7 +76,7 @@ get_header();
             <article class="character">
                 <div class="character__image-wrap">
                     <?php
-                    $character_image = atnif_image_mod('character_image', 'character__image', atnif_mod('character_name'));
+                    $character_image = atnif_image_mod('character_image', 'character__image', atnif_mod('character_name1'));
                     if ($character_image) {
                         echo $character_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     }
@@ -85,9 +85,9 @@ get_header();
                 <div class="character__details">
                     <div class="character__name">
                         <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name1')); ?></span>
-                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_romanization1')); ?></span>
+                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_ruby1')); ?></span>
                     </div>
-                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_descryption1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_copy1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                 </div>
                 <div class="character__select">
                     <p class="character__select-label">select</p>
