@@ -14,7 +14,7 @@ get_header();
         </div>
     </section>
 
-    <section id="story" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/story-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="story-heading">
+    <section id="story" class="section section--panel section--story" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/story-bg.png')); ?>');" aria-labelledby="story-heading">
         <div class="section__inner section__inner--story">
             <div class="content-block">
                 <h1 id="story-heading" class="section-heading">
@@ -64,7 +64,7 @@ get_header();
         </div>
     </section>
 
-    <section id="character" class="section section--paper" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/character-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="character-heading">
+    <section id="character" class="section section--paper section--character" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/character-bg.png')); ?>');" aria-labelledby="character-heading">
         <div class="section__inner">
             <h2 id="character-heading" class="section-heading">
                 <span>
@@ -85,9 +85,9 @@ get_header();
                 <div class="character__details">
                     <div class="character__name">
                         <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name1')); ?></span>
-                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_ruby')); ?></span>
+                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_romanization1')); ?></span>
                     </div>
-                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_descryption1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                 </div>
                 <div class="character__select">
                     <p class="character__select-label">select</p>
@@ -101,7 +101,7 @@ get_header();
         </div>
     </section>
 
-    <section id="gallery" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/gallery-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="gallery-heading">
+    <section id="gallery" class="section section--panel section--gallery" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/gallery-bg.png')); ?>');" aria-labelledby="gallery-heading">
         <div class="section__inner">
             <h2 id="gallery-heading" class="section-heading">
                 <span>
@@ -126,7 +126,7 @@ get_header();
         </div>
     </section>
 
-    <section id="special" class="section section--paper" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/special-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="special-heading">
+    <section id="special" class="section section--paper section--special" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/special-bg.png')); ?>');" aria-labelledby="special-heading">
         <div class="section__inner">
             <h2 id="special-heading" class="section-heading">
                 <span>
@@ -166,7 +166,7 @@ get_header();
         </div>
     </section>
 
-    <section id="game" class="section section--panel" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/game-bg.png')); ?>'); background-position: center; background-size: cover;" aria-labelledby="game-heading">
+    <section id="game" class="section section--panel section--game" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/game-bg.png')); ?>');" aria-labelledby="game-heading">
         <div class="section__inner">
             <h2 id="game-heading" class="section-heading">
                 <span>

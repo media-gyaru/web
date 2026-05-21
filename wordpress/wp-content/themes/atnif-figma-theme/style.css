@@ -163,15 +163,28 @@ select {
 }
 
 .section {
+    display: grid;
+    align-items: center;
     padding: 160px var(--atnif-side);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .section--panel {
-    background: var(--atnif-panel);
+    background-color: var(--atnif-panel);
 }
 
 .section--paper {
-    background: var(--atnif-paper);
+    background-color: var(--atnif-paper);
+}
+
+.section[style] {
+    background-color: var(--atnif-paper);
+}
+
+.section--panel[style] {
+    background-color: var(--atnif-panel);
 }
 
 .section__inner {
@@ -634,6 +647,28 @@ select {
     height: 1px;
     overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
+}
+
+@media (min-width: 1101px) {
+    .section--story {
+        min-height: 2156px;
+    }
+
+    .section--character {
+        min-height: 1110px;
+    }
+
+    .section--gallery {
+        min-height: 866px;
+    }
+
+    .section--special {
+        min-height: 866px;
+    }
+
+    .section--game {
+        min-height: 850px;
+    }
 }
 
 @media (max-width: 1100px) {
