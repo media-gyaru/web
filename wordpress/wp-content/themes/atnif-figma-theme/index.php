@@ -105,15 +105,25 @@ get_header();
                 <div class="character__select">
                     <p class="character__select-label">select</p>
                     <div class="character__swatches">
-                        <button class="character__swatch is-active" type="button" data-character-button="0" aria-pressed="true">
-                            <span class="screen-reader-text"><?php esc_html_e('Show character 1', 'atnif-figma'); ?></span>
-                        </button>
-                        <button class="character__swatch" type="button" data-character-button="1" aria-pressed="false">
-                            <span class="screen-reader-text"><?php esc_html_e('Show character 2', 'atnif-figma'); ?></span>
-                        </button>
-                        <button class="character__swatch" type="button" data-character-button="2" aria-pressed="false">
-                            <span class="screen-reader-text"><?php esc_html_e('Show character 3', 'atnif-figma'); ?></span>
-                        </button>
+                        <?php for ($i = 1; $i <= 3; $i++) : ?>
+                            <?php
+                            $select_icon = atnif_image_url_mod('character_select_icon' . $i);
+                            $button_classes = array('character__swatch');
+
+                            if ($select_icon) {
+                                $button_classes[] = 'character__swatch--has-icon';
+                            }
+
+                            if ($i === 1) {
+                                $button_classes[] = 'is-active';
+                            }
+
+                            $select_icon_style = $select_icon ? '--character-select-icon: url(' . esc_url($select_icon) . ');' : '';
+                            ?>
+                            <button class="<?php echo esc_attr(implode(' ', $button_classes)); ?>" type="button" data-character-button="<?php echo esc_attr($i - 1); ?>" aria-pressed="<?php echo $i === 1 ? 'true' : 'false'; ?>"<?php echo $select_icon_style ? ' style="' . esc_attr($select_icon_style) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+                                <span class="screen-reader-text"><?php echo esc_html(sprintf(__('Show character %d', 'atnif-figma'), $i)); ?></span>
+                            </button>
+                        <?php endfor; ?>
                     </div>
                 </div>
             </article>
