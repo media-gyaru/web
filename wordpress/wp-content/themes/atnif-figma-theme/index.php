@@ -76,7 +76,7 @@ get_header();
             <article class="character">
                 <div class="character__image-wrap">
                     <?php
-                    $character_image = atnif_image_mod('character_image', 'character__image', atnif_mod('character_name1'));
+                    $character_image = atnif_image_mod('character_image1', 'character__image1', atnif_mod('character_name1'));
                     if ($character_image) {
                         echo $character_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     }
