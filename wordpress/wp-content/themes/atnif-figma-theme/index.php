@@ -73,10 +73,23 @@ get_header();
                 </span>
             </h2>
 
-            <article class="character">
-                <div class="character__image-wrap">
+            <?php
+            $character_items = array();
+            for ($i = 1; $i <= 3; $i++) {
+                $character_items[] = array(
+                    'name' => atnif_mod('character_name' . $i),
+                    'ruby' => atnif_mod('character_ruby' . $i),
+                    'copy' => atnif_mod('character_copy' . $i),
+                    'image' => atnif_image_url_mod('character_image' . $i),
+                );
+            }
+            ?>
+
+            <article class="character" data-atnif-character>
+                <script type="application/json" data-character-items><?php echo wp_json_encode($character_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
+                <div class="character__image-wrap" data-character-image-wrap>
                     <?php
-                    $character_image = atnif_image_mod('character_image1', 'character__image1', atnif_mod('character_name1'));
+                    $character_image = atnif_image_mod('character_image1', 'character__image', atnif_mod('character_name1'));
                     if ($character_image) {
                         echo $character_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     }
@@ -84,17 +97,23 @@ get_header();
                 </div>
                 <div class="character__details">
                     <div class="character__name">
-                        <span class="character__name-main"><?php echo esc_html(atnif_mod('character_name1')); ?></span>
-                        <span class="character__name-sub"><?php echo esc_html(atnif_mod('character_ruby1')); ?></span>
+                        <span class="character__name-main" data-character-name><?php echo esc_html(atnif_mod('character_name1')); ?></span>
+                        <span class="character__name-sub" data-character-ruby><?php echo esc_html(atnif_mod('character_ruby1')); ?></span>
                     </div>
-                    <p class="character__copy"><?php echo atnif_textarea(atnif_mod('character_copy1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                    <p class="character__copy" data-character-copy><?php echo atnif_textarea(atnif_mod('character_copy1')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                 </div>
                 <div class="character__select">
                     <p class="character__select-label">select</p>
-                    <div class="character__swatches" aria-hidden="true">
-                        <button class="character__swatch is-active" type="button"></button>
-                        <button class="character__swatch" type="button"></button>
-                        <button class="character__swatch" type="button"></button>
+                    <div class="character__swatches">
+                        <button class="character__swatch is-active" type="button" data-character-button="0" aria-pressed="true">
+                            <span class="screen-reader-text"><?php esc_html_e('Show character 1', 'atnif-figma'); ?></span>
+                        </button>
+                        <button class="character__swatch" type="button" data-character-button="1" aria-pressed="false">
+                            <span class="screen-reader-text"><?php esc_html_e('Show character 2', 'atnif-figma'); ?></span>
+                        </button>
+                        <button class="character__swatch" type="button" data-character-button="2" aria-pressed="false">
+                            <span class="screen-reader-text"><?php esc_html_e('Show character 3', 'atnif-figma'); ?></span>
+                        </button>
                     </div>
                 </div>
             </article>

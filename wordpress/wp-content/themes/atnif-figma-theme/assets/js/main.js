@@ -56,4 +56,69 @@
       });
     });
   });
+
+  var characters = document.querySelectorAll("[data-atnif-character]");
+
+  characters.forEach(function (character) {
+    var itemsNode = character.querySelector("[data-character-items]");
+    var buttons = Array.prototype.slice.call(
+      character.querySelectorAll("[data-character-button]")
+    );
+    var imageWrap = character.querySelector("[data-character-image-wrap]");
+    var name = character.querySelector("[data-character-name]");
+    var ruby = character.querySelector("[data-character-ruby]");
+    var copy = character.querySelector("[data-character-copy]");
+    var items = [];
+
+    if (itemsNode) {
+      try {
+        items = JSON.parse(itemsNode.textContent || "[]");
+      } catch (error) {
+        items = [];
+      }
+    }
+
+    function renderCharacter(index) {
+      var item = items[index];
+
+      if (!item) {
+        return;
+      }
+
+      if (name) {
+        name.textContent = item.name || "";
+      }
+
+      if (ruby) {
+        ruby.textContent = item.ruby || "";
+      }
+
+      if (copy) {
+        copy.textContent = item.copy || "";
+      }
+
+      if (imageWrap) {
+        imageWrap.textContent = "";
+
+        if (item.image) {
+          var image = document.createElement("img");
+          image.className = "character__image";
+          image.src = item.image;
+          image.alt = item.name || "";
+          imageWrap.appendChild(image);
+        }
+      }
+
+      buttons.forEach(function (button, buttonIndex) {
+        button.classList.toggle("is-active", buttonIndex === index);
+        button.setAttribute("aria-pressed", buttonIndex === index ? "true" : "false");
+      });
+    }
+
+    buttons.forEach(function (button, index) {
+      button.addEventListener("click", function () {
+        renderCharacter(index);
+      });
+    });
+  });
 })();

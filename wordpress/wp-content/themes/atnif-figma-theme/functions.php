@@ -106,6 +106,16 @@ function atnif_image_mod($key, $class = '', $alt = '') {
     return '';
 }
 
+function atnif_image_url_mod($key) {
+    $value = atnif_mod($key);
+
+    if (is_numeric($value)) {
+        return wp_get_attachment_image_url((int) $value, 'full') ?: '';
+    }
+
+    return $value;
+}
+
 function atnif_textarea($text) {
     return esc_html($text);
 }
