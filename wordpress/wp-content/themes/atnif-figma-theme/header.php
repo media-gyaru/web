@@ -3,7 +3,7 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-site-verification" content="thEiArInGD-X8q6d2x3rmt65ndqtOe2vmXvr9LlD_QQ" />
+    <meta name="google-site-verification" content="SPMgwl0H6buxpFyCnFkpV2fi2s45zgu_gpFD1Em8GLU" />
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
