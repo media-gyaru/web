@@ -71,16 +71,18 @@ select {
     z-index: 20;
     width: 100%;
     height: 120px;
-    background: var(--atnif-white);
-    background-position: center;
-    background-size: cover;
+    background: linear-gradient(
+        0deg,
+        rgba(229, 231, 235, 0) 0%,
+        rgba(229, 231, 235, 1) 100%
+    );
 }
 
 .site-header__inner {
     display: grid;
-    grid-template-columns: 213px minmax(0, 1fr);
+    grid-template-columns: 214px minmax(0, 1fr);
     align-items: center;
-    gap: clamp(28px, 8.8vw, 127px);
+    gap: clamp(28px, 8.75vw, 126px);
     width: min(1024px, calc(100% - 40px));
     height: 100%;
     margin: 0 auto;
@@ -89,9 +91,8 @@ select {
 .site-logo {
     display: grid;
     place-items: center;
-    width: 213px;
-    height: 71px;
-    transform: translateY(-16px);
+    width: 214px;
+    height: 70px;
     color: #000000;
     font-size: 12px;
     line-height: 16px;
@@ -101,8 +102,8 @@ select {
 
 .site-logo img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
+    transform: translateY(-16px);
 }
 
 .site-nav ul {
@@ -119,7 +120,7 @@ select {
     display: grid;
     width: 108px;
     min-height: 48px;
-    color: var(--atnif-indigo);
+    color: var(--atnif-blue);
     text-align: center;
     text-decoration: none;
 }

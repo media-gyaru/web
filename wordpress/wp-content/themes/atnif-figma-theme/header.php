@@ -16,7 +16,7 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div class="site-shell">
-    <header class="site-header" style="background-image: url('<?php echo esc_url(atnif_mod('hero_background')); ?>');">
+    <header class="site-header">
         <div class="site-header__inner">
             <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
