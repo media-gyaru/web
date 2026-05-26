@@ -4,6 +4,13 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="SPMgwl0H6buxpFyCnFkpV2fi2s45zgu_gpFD1Em8GLU" />
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "wx0dqymwqh");
+    </script>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
