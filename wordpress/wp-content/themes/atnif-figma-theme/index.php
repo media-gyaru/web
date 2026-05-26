@@ -3,7 +3,7 @@ get_header();
 ?>
 
 <main id="main" class="site-main">
-    <section class="hero" style="background-image: url('<?php echo esc_url(atnif_mod('hero_background')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
+    <section class="hero" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
         <div class="hero__media">
             <?php
             $hero_image = atnif_image_mod('hero_image', 'hero__image', get_bloginfo('name'));
