@@ -6,7 +6,10 @@ get_header();
     <section class="hero" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
         <div class="hero__media">
             <?php
-            $hero_image = atnif_image_mod('hero_image', 'hero__image', get_bloginfo('name'));
+            $hero_image = atnif_image_mod('hero_image', 'hero__image', get_bloginfo('name'), 'full', array(
+                'loading' => 'eager',
+                'fetchpriority' => 'high',
+            ));
             if ($hero_image) {
                 echo $hero_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }

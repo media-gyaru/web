@@ -25,14 +25,107 @@ add_action('after_setup_theme', 'atnif_theme_setup');
 
 function atnif_enqueue_assets() {
     wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500&display=swap', array(), null);
-    wp_enqueue_style('atnif-style', get_stylesheet_uri(), array('atnif-google-fonts'), ATNIF_THEME_VERSION);
+    wp_enqueue_style('atnif-style', get_stylesheet_uri(), array(), ATNIF_THEME_VERSION);
     wp_enqueue_script('atnif-main', get_template_directory_uri() . '/assets/js/main.js', array(), ATNIF_THEME_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'atnif_enqueue_assets');
 
-function atnif_asset_url($path) {
-    return get_template_directory_uri() . '/assets/' . ltrim($path, '/');
+function atnif_resource_hints($urls, $relation_type) {
+    if ('preconnect' === $relation_type) {
+        $urls[] = 'https://fonts.googleapis.com';
+        $urls[] = array(
+            'href' => 'https://fonts.gstatic.com',
+            'crossorigin' => 'anonymous',
+        );
+    }
+
+    return $urls;
 }
+add_filter('wp_resource_hints', 'atnif_resource_hints', 10, 2);
+
+function atnif_async_font_stylesheet($html, $handle, $href) {
+    if ('atnif-google-fonts' !== $handle) {
+        return $html;
+    }
+
+    $href = esc_url($href);
+
+    return '<link rel="preload" as="style" href="' . $href . '" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n"
+        . '<noscript><link rel="stylesheet" href="' . $href . '"></noscript>' . "\n";
+}
+add_filter('style_loader_tag', 'atnif_async_font_stylesheet', 10, 3);
+
+function atnif_disable_frontend_admin_assets() {
+    if (is_admin() || is_customize_preview()) {
+        return;
+    }
+
+    add_filter('show_admin_bar', '__return_false');
+}
+add_action('after_setup_theme', 'atnif_disable_frontend_admin_assets');
+
+function atnif_dequeue_frontend_admin_assets() {
+    if (is_admin() || is_customize_preview()) {
+        return;
+    }
+
+    wp_dequeue_style('dashicons');
+    wp_dequeue_style('admin-bar');
+    wp_dequeue_script('admin-bar');
+    wp_dequeue_style('googlesitekit-adminbar');
+    wp_dequeue_style('googlesitekit-adminbar-css');
+    wp_dequeue_script('googlesitekit-adminbar');
+}
+add_action('wp_enqueue_scripts', 'atnif_dequeue_frontend_admin_assets', 100);
+
+function atnif_asset_url($path) {
+    $path = ltrim($path, '/');
+
+    return get_template_directory_uri() . '/assets/' . atnif_optimized_asset_path($path);
+}
+
+function atnif_asset_file_exists($path) {
+    return file_exists(get_template_directory() . '/assets/' . ltrim($path, '/'));
+}
+
+function atnif_optimized_asset_path($path) {
+    $path = ltrim($path, '/');
+    $optimized = array(
+        'images/special-mascot.png' => 'images/special-mascot-404.webp',
+        'images/game-badge.png' => 'images/game-badge-400.webp',
+    );
+
+    if (isset($optimized[$path]) && atnif_asset_file_exists($optimized[$path])) {
+        return $optimized[$path];
+    }
+
+    if (preg_match('/\.png$/', $path)) {
+        $webp_path = preg_replace('/\.png$/', '.webp', $path);
+
+        if ($webp_path && atnif_asset_file_exists($webp_path)) {
+            return $webp_path;
+        }
+    }
+
+    return $path;
+}
+
+function atnif_maybe_optimized_image_url($url) {
+    $assets_url = get_template_directory_uri() . '/assets/';
+
+    if (strpos($url, $assets_url) !== 0) {
+        return $url;
+    }
+
+    return $assets_url . atnif_optimized_asset_path(substr($url, strlen($assets_url)));
+}
+
+function atnif_preload_hero_background() {
+    $hero_url = atnif_asset_url('images/key-visual.png');
+
+    echo '<link rel="preload" as="image" href="' . esc_url($hero_url) . '" fetchpriority="high">' . "\n";
+}
+add_action('wp_head', 'atnif_preload_hero_background', 1);
 
 function atnif_default($key) {
     $defaults = array(
@@ -92,18 +185,34 @@ function atnif_mod($key) {
     return get_theme_mod('atnif_' . $key, atnif_default($key));
 }
 
-function atnif_image_mod($key, $class = '', $alt = '') {
+function atnif_image_mod($key, $class = '', $alt = '', $size = 'full', $attrs = array()) {
     $value = atnif_mod($key);
 
+    $attrs = wp_parse_args($attrs, array(
+        'class' => $class,
+        'alt' => $alt,
+        'decoding' => 'async',
+        'loading' => 'lazy',
+    ));
+
     if (is_numeric($value)) {
-        return wp_get_attachment_image((int) $value, 'full', false, array(
-            'class' => $class,
-            'alt' => $alt,
-        ));
+        return wp_get_attachment_image((int) $value, $size, false, $attrs);
     }
 
     if ($value) {
-        return '<img class="' . esc_attr($class) . '" src="' . esc_url($value) . '" alt="' . esc_attr($alt) . '">';
+        $attrs['src'] = atnif_maybe_optimized_image_url($value);
+
+        $html_attrs = '';
+        foreach ($attrs as $name => $attr_value) {
+            if ('' === $attr_value || null === $attr_value || false === $attr_value) {
+                continue;
+            }
+
+            $escaped_value = 'src' === $name ? esc_url($attr_value) : esc_attr($attr_value);
+            $html_attrs .= ' ' . esc_attr($name) . '="' . $escaped_value . '"';
+        }
+
+        return '<img' . $html_attrs . '>';
     }
 
     return '';
@@ -116,7 +225,7 @@ function atnif_image_url_mod($key) {
         return wp_get_attachment_image_url((int) $value, 'full') ?: '';
     }
 
-    return $value;
+    return atnif_maybe_optimized_image_url($value);
 }
 
 function atnif_textarea($text) {
