@@ -142,9 +142,14 @@ get_header();
                 <?php for ($i = 1; $i <= 6; $i++) : ?>
                     <div class="gallery-grid__item">
                         <?php
-                        $gallery_image = atnif_image_mod('gallery_' . $i, '', sprintf(__('Gallery image %d', 'atnif-figma'), $i));
+                        $gallery_key = 'gallery_' . $i;
+                        $gallery_image_url = atnif_image_url_mod($gallery_key);
+                        $gallery_image = atnif_image_mod($gallery_key, '', sprintf(__('Gallery image %d', 'atnif-figma'), $i));
                         if ($gallery_image) {
                             echo $gallery_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            if (basename((string) parse_url($gallery_image_url, PHP_URL_PATH)) === 'comingsoon.png') {
+                                echo '<span class="gallery-grid__coming-soon">' . esc_html__('Coming Soon', 'atnif-figma') . '</span>';
+                            }
                         } elseif ($i === 1) {
                             esc_html_e('写真', 'atnif-figma');
                         }
