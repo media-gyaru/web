@@ -281,10 +281,7 @@ select {
 .character__image-wrap,
 .character__details {
     opacity: 1;
-    transform: translateY(0);
-    transition:
-        opacity 180ms ease,
-        transform 180ms ease;
+    transition: opacity 180ms ease;
 }
 
 .scenario__title.is-fading,
@@ -292,7 +289,6 @@ select {
 .character__image-wrap.is-fading,
 .character__details.is-fading {
     opacity: 0;
-    transform: translateY(6px);
 }
 
 .scenario__body {
