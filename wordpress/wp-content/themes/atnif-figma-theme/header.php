@@ -2,7 +2,6 @@
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="robots" content="noindex">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="SPMgwl0H6buxpFyCnFkpV2fi2s45zgu_gpFD1Em8GLU" />
     
