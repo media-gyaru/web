@@ -276,6 +276,25 @@ select {
     line-height: 40px;
 }
 
+.scenario__title,
+.scenario__text,
+.character__image-wrap,
+.character__details {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+}
+
+.scenario__title.is-fading,
+.scenario__text.is-fading,
+.character__image-wrap.is-fading,
+.character__details.is-fading {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
 .scenario__body {
     display: grid;
     grid-template-columns: 45px minmax(0, 694px) 45px;
@@ -387,6 +406,15 @@ select {
     align-items: flex-end;
     width: min(360px, 45%);
     text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scenario__title,
+    .scenario__text,
+    .character__image-wrap,
+    .character__details {
+        transition: none;
+    }
 }
 
 .character__name {

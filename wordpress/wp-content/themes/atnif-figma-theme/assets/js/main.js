@@ -1,4 +1,38 @@
 (function () {
+  var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fadeDuration = 180;
+
+  function fadeSwap(elements, update, token, getToken) {
+    elements = elements.filter(Boolean);
+
+    if (prefersReducedMotion || !elements.length) {
+      update();
+      return;
+    }
+
+    elements.forEach(function (element) {
+      element.classList.add("is-fading");
+    });
+
+    window.setTimeout(function () {
+      if (token !== getToken()) {
+        return;
+      }
+
+      update();
+
+      window.requestAnimationFrame(function () {
+        if (token !== getToken()) {
+          return;
+        }
+
+        elements.forEach(function (element) {
+          element.classList.remove("is-fading");
+        });
+      });
+    }, fadeDuration);
+  }
+
   var sliders = document.querySelectorAll("[data-atnif-slider]");
 
   sliders.forEach(function (slider) {
@@ -8,6 +42,7 @@
     var itemsNode = slider.querySelector("[data-slider-items]");
     var items = [];
     var activeIndex = 0;
+    var renderToken = 0;
 
     if (itemsNode) {
       try {
@@ -18,9 +53,29 @@
     }
 
     function render(index) {
-      activeIndex = (index + dots.length) % dots.length;
+      if (!dots.length) {
+        return;
+      }
 
-      if (items[activeIndex]) {
+      var nextIndex = (index + dots.length) % dots.length;
+
+      if (nextIndex === activeIndex) {
+        return;
+      }
+
+      activeIndex = nextIndex;
+      renderToken += 1;
+      var token = renderToken;
+
+      dots.forEach(function (dot, dotIndex) {
+        dot.classList.toggle("is-active", dotIndex === activeIndex);
+      });
+
+      fadeSwap([title, text], function () {
+        if (!items[activeIndex]) {
+          return;
+        }
+
         if (title) {
           title.textContent = items[activeIndex].title || "";
         }
@@ -28,10 +83,8 @@
         if (text) {
           text.textContent = items[activeIndex].text || "";
         }
-      }
-
-      dots.forEach(function (dot, dotIndex) {
-        dot.classList.toggle("is-active", dotIndex === activeIndex);
+      }, token, function () {
+        return renderToken;
       });
     }
 
@@ -68,7 +121,10 @@
     var name = character.querySelector("[data-character-name]");
     var ruby = character.querySelector("[data-character-ruby]");
     var copy = character.querySelector("[data-character-copy]");
+    var details = character.querySelector(".character__details");
     var items = [];
+    var activeIndex = 0;
+    var renderToken = 0;
 
     if (itemsNode) {
       try {
@@ -81,37 +137,45 @@
     function renderCharacter(index) {
       var item = items[index];
 
-      if (!item) {
+      if (!item || index === activeIndex) {
         return;
       }
 
-      if (name) {
-        name.textContent = item.name || "";
-      }
-
-      if (ruby) {
-        ruby.textContent = item.ruby || "";
-      }
-
-      if (copy) {
-        copy.textContent = item.copy || "";
-      }
-
-      if (imageWrap) {
-        imageWrap.textContent = "";
-
-        if (item.image) {
-          var image = document.createElement("img");
-          image.className = "character__image";
-          image.src = item.image;
-          image.alt = item.name || "";
-          imageWrap.appendChild(image);
-        }
-      }
+      activeIndex = index;
+      renderToken += 1;
+      var token = renderToken;
 
       buttons.forEach(function (button, buttonIndex) {
         button.classList.toggle("is-active", buttonIndex === index);
         button.setAttribute("aria-pressed", buttonIndex === index ? "true" : "false");
+      });
+
+      fadeSwap([imageWrap, details], function () {
+        if (name) {
+          name.textContent = item.name || "";
+        }
+
+        if (ruby) {
+          ruby.textContent = item.ruby || "";
+        }
+
+        if (copy) {
+          copy.textContent = item.copy || "";
+        }
+
+        if (imageWrap) {
+          imageWrap.textContent = "";
+
+          if (item.image) {
+            var image = document.createElement("img");
+            image.className = "character__image";
+            image.src = item.image;
+            image.alt = item.name || "";
+            imageWrap.appendChild(image);
+          }
+        }
+      }, token, function () {
+        return renderToken;
       });
     }
 
