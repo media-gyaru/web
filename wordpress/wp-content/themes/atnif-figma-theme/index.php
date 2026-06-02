@@ -39,10 +39,6 @@ get_header();
                     'title' => atnif_mod('scenario_title2'),
                     'text' => atnif_mod('scenario_text2'),
                 ),
-                array(
-                    'title' => atnif_mod('scenario_title3'),
-                    'text' => atnif_mod('scenario_text3'),
-                ),
             );
             ?>
 
@@ -50,18 +46,17 @@ get_header();
                 <script type="application/json" data-slider-items><?php echo wp_json_encode($scenario_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
                 <h2 class="scenario__title" data-slider-title><?php echo esc_html(atnif_mod('scenario_title1')); ?></h2>
                 <div class="scenario__body">
-                    <button class="arrow-button arrow-button--prev" type="button" data-slider-prev>
+                    <button class="arrow-button arrow-left" type="button" data-slider-prev>
                         <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif-figma'); ?></span>
                     </button>
                     <p class="scenario__text" data-slider-text><?php echo esc_html(atnif_mod('scenario_text1')); ?></p>
-                    <button class="arrow-button" type="button" data-slider-next>
+                    <button class="arrow-button arrow-right" type="button" data-slider-next>
                         <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif-figma'); ?></span>
                     </button>
                 </div>
                 <div class="pager" aria-hidden="true">
                     <button class="pager__dot is-active" type="button" data-slider-dot="0"></button>
                     <button class="pager__dot" type="button" data-slider-dot="1"></button>
-                    <button class="pager__dot" type="button" data-slider-dot="2"></button>
                 </div>
             </article>
         </div>

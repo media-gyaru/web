@@ -324,15 +324,17 @@ select {
 
 .arrow-button::before {
     content: "";
-    width: 14px;
-    height: 14px;
-    border-top: 1px solid currentColor;
-    border-right: 1px solid currentColor;
-    transform: rotate(45deg);
+    width: 45px;
+    height: 45px;
+    background: center / contain no-repeat;
 }
 
-.arrow-button--prev::before {
-    transform: rotate(225deg);
+.arrow-left::before {
+    background-image: url("assets/images/arrow-left.svg");
+}
+
+.arrow-right::before {
+    background-image: url("assets/images/arrow-right.svg");
 }
 
 .pager {
