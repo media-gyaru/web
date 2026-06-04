@@ -122,8 +122,10 @@ function atnif_maybe_optimized_image_url($url) {
 
 function atnif_preload_hero_background() {
     $hero_url = atnif_asset_url('images/key-visual.png');
+    $mobile_hero_url = atnif_asset_url('images/mobile_mainvisual.png');
 
-    echo '<link rel="preload" as="image" href="' . esc_url($hero_url) . '" fetchpriority="high">' . "\n";
+    echo '<link rel="preload" as="image" href="' . esc_url($hero_url) . '" media="(min-width: 761px)" fetchpriority="high">' . "\n";
+    echo '<link rel="preload" as="image" href="' . esc_url($mobile_hero_url) . '" media="(max-width: 760px)" fetchpriority="high">' . "\n";
 }
 add_action('wp_head', 'atnif_preload_hero_background', 1);
 
