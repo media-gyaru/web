@@ -872,6 +872,22 @@ select {
     .scenario {
         margin-inline: auto;
     }
+
+    .special__links {
+        width: max-content;
+        max-width: 100%;
+    }
+
+    .text-link {
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .game__link {
+        max-width: none;
+        font-size: 16px;
+        white-space: nowrap;
+    }
 }
 
 @media (max-width: 640px) {
