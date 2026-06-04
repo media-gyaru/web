@@ -131,11 +131,11 @@
         }
 
         if (title) {
-          title.textContent = items[activeIndex].title || "";
+          title.innerHTML = items[activeIndex].title || "";
         }
 
         if (text) {
-          text.textContent = items[activeIndex].text || "";
+          text.innerHTML = items[activeIndex].text || "";
         }
       }, token, function () {
         return renderToken;

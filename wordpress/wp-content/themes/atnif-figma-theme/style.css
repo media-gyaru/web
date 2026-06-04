@@ -426,6 +426,13 @@ select {
     line-height: 40px;
 }
 
+.body-copy strong,
+.scenario__title strong,
+.scenario__text strong {
+    font-weight: 700;
+    font-family: var(--atnif-serif);
+}
+
 .scenario__title,
 .scenario__text,
 .character__image-wrap,
@@ -983,6 +990,7 @@ select {
 
     .section__inner--story {
         align-items: center;
+        transform: translateY(-40px);
     }
 
     .scenario {

@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ATNIF_THEME_VERSION', '1.0.0');
+define('ATNIF_THEME_VERSION', '1.0.1');
 
 function atnif_theme_setup() {
     add_theme_support('title-tag');
@@ -24,7 +24,7 @@ function atnif_theme_setup() {
 add_action('after_setup_theme', 'atnif_theme_setup');
 
 function atnif_enqueue_assets() {
-    wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500&display=swap', array(), null);
+    wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&display=swap', array(), null);
     wp_enqueue_style('atnif-style', get_stylesheet_uri(), array(), ATNIF_THEME_VERSION);
     wp_enqueue_script('atnif-main', get_template_directory_uri() . '/assets/js/main.js', array(), ATNIF_THEME_VERSION, true);
 }
@@ -239,6 +239,10 @@ function atnif_sanitize_url_or_empty($value) {
     return $value === '' ? '' : esc_url_raw($value);
 }
 
+function atnif_sanitize_story_html($value) {
+    return wp_kses_post($value);
+}
+
 function atnif_customize_register($wp_customize) {
     $wp_customize->add_panel('atnif_content', array(
         'title' => __('@Nif Page Content', 'atnif-figma'),
@@ -309,9 +313,15 @@ function atnif_customize_register($wp_customize) {
     foreach ($text_fields as $section => $fields) {
         foreach ($fields as $key => $field) {
             $type = $field[1];
+            $sanitize_callback = $type === 'url' ? 'atnif_sanitize_url_or_empty' : 'sanitize_textarea_field';
+
+            if ($section === 'story') {
+                $sanitize_callback = 'atnif_sanitize_story_html';
+            }
+
             $wp_customize->add_setting('atnif_' . $key, array(
                 'default' => atnif_default($key),
-                'sanitize_callback' => $type === 'url' ? 'atnif_sanitize_url_or_empty' : 'sanitize_textarea_field',
+                'sanitize_callback' => $sanitize_callback,
             ));
             $wp_customize->add_control('atnif_' . $key, array(
                 'label' => $field[0],

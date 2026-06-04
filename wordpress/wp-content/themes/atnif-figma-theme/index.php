@@ -25,30 +25,30 @@ get_header();
                         <span class="section-heading__ja">あらすじ</span>
                     </span>
                 </h1>
-                <p class="body-copy"><?php echo esc_html(atnif_mod('story_text')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+                <p class="body-copy"><?php echo wp_kses_post(atnif_mod('story_text')); ?></p>
             </div>
 
             <?php
             $scenario_items = array(
                 array(
-                    'title' => atnif_mod('scenario_title1'),
-                    'text' => atnif_mod('scenario_text1'),
+                    'title' => wp_kses_post(atnif_mod('scenario_title1')),
+                    'text' => wp_kses_post(atnif_mod('scenario_text1')),
                 ),
                 array(
-                    'title' => atnif_mod('scenario_title2'),
-                    'text' => atnif_mod('scenario_text2'),
+                    'title' => wp_kses_post(atnif_mod('scenario_title2')),
+                    'text' => wp_kses_post(atnif_mod('scenario_text2')),
                 ),
             );
             ?>
 
             <article class="scenario" data-atnif-slider>
                 <script type="application/json" data-slider-items><?php echo wp_json_encode($scenario_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
-                <h2 class="scenario__title" data-slider-title><?php echo esc_html(atnif_mod('scenario_title1')); ?></h2>
+                <h2 class="scenario__title" data-slider-title><?php echo wp_kses_post(atnif_mod('scenario_title1')); ?></h2>
                 <div class="scenario__body">
                     <button class="arrow-button arrow-left" type="button" data-slider-prev>
                         <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif-figma'); ?></span>
                     </button>
-                    <p class="scenario__text" data-slider-text><?php echo esc_html(atnif_mod('scenario_text1')); ?></p>
+                    <p class="scenario__text" data-slider-text><?php echo wp_kses_post(atnif_mod('scenario_text1')); ?></p>
                     <button class="arrow-button arrow-right" type="button" data-slider-next>
                         <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif-figma'); ?></span>
                     </button>
