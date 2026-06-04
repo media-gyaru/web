@@ -16,6 +16,7 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<img class="fixed-nav-btn" src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/nav-btn.svg'); ?>" alt="" aria-hidden="true">
 <div class="site-shell">
     <header class="site-header">
         <div class="site-header__inner">

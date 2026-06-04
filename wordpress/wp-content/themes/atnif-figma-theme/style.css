@@ -165,6 +165,10 @@ select {
     display: none;
 }
 
+.fixed-nav-btn {
+    display: none;
+}
+
 .section {
     display: grid;
     align-items: center;
@@ -828,30 +832,8 @@ select {
         --atnif-content-scale: 0.612;
     }
 
-    body.admin-bar .site-header {
-        top: 46px;
-    }
-
     .site-header {
         display: none;
-    }
-
-    .site-header__inner {
-        grid-template-columns: 1fr;
-        justify-items: center;
-    }
-
-    .site-nav ul {
-        justify-content: center;
-    }
-
-    .site-nav a {
-        min-width: 72px;
-    }
-
-    .site-nav__en {
-        font-size: 16px;
-        line-height: 22px;
     }
 
     .hero {
@@ -867,6 +849,16 @@ select {
         width: 300px;
         transform: translateX(-50%);
         object-fit: contain;
+    }
+
+    .fixed-nav-btn {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 20px;
+        z-index: 100;
+        width: 71px;
+        height: 80px;
     }
 
     .hero__image {
