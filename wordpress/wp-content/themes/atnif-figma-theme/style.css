@@ -864,6 +864,14 @@ select {
     .hero__image {
         display: none;
     }
+
+    .section__inner--story {
+        align-items: center;
+    }
+
+    .scenario {
+        margin-inline: auto;
+    }
 }
 
 @media (max-width: 640px) {
