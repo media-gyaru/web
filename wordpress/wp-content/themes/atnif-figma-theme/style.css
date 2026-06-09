@@ -637,6 +637,10 @@ select {
     background: #fff3be var(--character-select-icon) center / cover no-repeat;
 }
 
+.character__swatch--has-icon[data-character-button="1"] {
+    background: #e0b4ff var(--character-select-icon) center / cover no-repeat;
+}
+
 .character__swatch.is-active {
     background: var(--atnif-blue);
     box-shadow: inset 0 0 0 999px rgba(30, 58, 138, 0.7);
@@ -644,6 +648,10 @@ select {
 
 .character__swatch--has-icon.is-active {
     background: #fff3be var(--character-select-icon) center / cover no-repeat;
+}
+
+.character__swatch--has-icon[data-character-button="1"].is-active {
+    background: #e0b4ff var(--character-select-icon) center / cover no-repeat;
 }
 
 .gallery-grid {
