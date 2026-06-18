@@ -380,7 +380,7 @@ function atnif_nav_items() {
         'character' => array('Character', '登場人物'),
         'gallery' => array('Gallery', '写真展示'),
         'special' => array('Special', 'おたのしみ'),
-        'blog' => array('Blog', 'ブログ'),
+        // 'blog' => array('Blog', 'ブログ'),
         'game' => array('Game', 'ゲーム'),
     );
 }
