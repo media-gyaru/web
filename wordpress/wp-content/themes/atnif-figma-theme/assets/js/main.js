@@ -2,6 +2,26 @@
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var fadeDuration = 180;
 
+  var hero = document.querySelector(".hero");
+
+  if (hero) {
+    var heroVariants = ["nagi", "toki"];
+    var heroVariant = heroVariants[0];
+
+    try {
+      heroVariant =
+        window.localStorage.getItem("atnifMobileHeroVariant") === "nagi"
+          ? "toki"
+          : "nagi";
+      window.localStorage.setItem("atnifMobileHeroVariant", heroVariant);
+    } catch (error) {
+      heroVariant = heroVariants[Math.floor(Math.random() * heroVariants.length)];
+    }
+
+    hero.classList.remove("mb-key-visual__nagi", "mb-key-visual__toki");
+    hero.classList.add("mb-key-visual__" + heroVariant);
+  }
+
   function fadeSwap(elements, update, token, getToken) {
     elements = elements.filter(Boolean);
 

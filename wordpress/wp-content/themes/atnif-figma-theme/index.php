@@ -3,7 +3,7 @@ get_header();
 ?>
 
 <main id="main" class="site-main">
-    <section class="hero" style="--hero-background: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>'); --hero-mobile-background: url('<?php echo esc_url(atnif_asset_url('images/mobile_mainvisual.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
+    <section class="hero" style="--hero-background: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>'); --hero-mobile-background: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-nagi: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-toki: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__toki.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
         <img class="hero__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
     </section>
 
