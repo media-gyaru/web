@@ -1,0 +1,404 @@
+/*
+Theme Name: Single Thread Drawing Board
+Theme URI: https://example.com/
+Author: Codex
+Description: A minimal WordPress theme for a single-thread message board with drawing canvas posts.
+Version: 1.0.0
+Text Domain: single-thread-board
+*/
+
+:root {
+  --bg: #f6f3ee;
+  --paper: #fffdf8;
+  --ink: #1d2528;
+  --muted: #667071;
+  --line: #d9d3c8;
+  --accent: #227c6b;
+  --accent-dark: #135c50;
+  --danger: #b33a3a;
+  --shadow: 0 18px 45px rgba(42, 35, 25, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.65;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.site-shell {
+  min-height: 100vh;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.88);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-header__inner,
+.board-page {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 72px;
+}
+
+.site-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.site-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.board-page {
+  padding: 34px 0 52px;
+}
+
+.board-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.board-intro h1 {
+  margin: 0 0 4px;
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 1.08;
+}
+
+.board-intro p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.board-count {
+  min-width: 112px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  text-align: center;
+}
+
+.board-count strong {
+  display: block;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.board-count span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.board-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.board-composer,
+.board-post {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.board-composer {
+  position: sticky;
+  top: 96px;
+  padding: 18px;
+}
+
+.board-composer h2,
+.board-feed h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.field label,
+.canvas-label,
+.tool-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  padding: 10px 12px;
+}
+
+.field textarea {
+  min-height: 116px;
+  resize: vertical;
+}
+
+.canvas-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 10px 0 12px;
+}
+
+.tool-group {
+  display: grid;
+  gap: 7px;
+}
+
+.tool-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tool-row input[type="color"] {
+  width: 44px;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.tool-row input[type="range"] {
+  min-width: 0;
+  width: 100%;
+}
+
+.canvas-wrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(45deg, #f0eee9 25%, transparent 25%),
+    linear-gradient(-45deg, #f0eee9 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #f0eee9 75%),
+    linear-gradient(-45deg, transparent 75%, #f0eee9 75%);
+  background-color: #fff;
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+  touch-action: none;
+}
+
+#board-canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  cursor: crosshair;
+}
+
+.composer-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  padding: 9px 14px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--accent);
+}
+
+.button-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: var(--accent-dark);
+}
+
+.button-danger {
+  color: var(--danger);
+}
+
+.board-message {
+  margin: 0 0 16px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #e9f5f1;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.board-message--error {
+  background: #f8e7e7;
+  color: var(--danger);
+}
+
+.board-feed {
+  min-width: 0;
+}
+
+.post-list {
+  display: grid;
+  gap: 16px;
+}
+
+.board-post {
+  overflow: hidden;
+}
+
+.board-post__media {
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.board-post__body {
+  padding: 16px;
+}
+
+.board-post__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.board-post__name {
+  color: var(--ink);
+}
+
+.board-post__content p {
+  margin: 0 0 10px;
+}
+
+.board-post__content p:last-child {
+  margin-bottom: 0;
+}
+
+.empty-board {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.68);
+  padding: 28px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 24px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .board-layout,
+  .board-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .board-composer {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header__inner,
+  .board-page {
+    width: min(100% - 20px, 1120px);
+  }
+
+  .site-header__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 88px;
+    gap: 6px;
+  }
+
+  .canvas-tools,
+  .composer-actions {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

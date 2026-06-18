@@ -398,6 +398,14 @@ LOCK TABLES `wp_users` WRITE;
 INSERT INTO `wp_users` VALUES (1,'atnifu','$wp$2y$10$rluS5wTfR8Bs6.NRtpl8GuDCmhUV6LlmmkLolwOuEaD9v2YokFlTS','atnifu','soujirou.takagi@gmail.com','http://localhost:8080','2026-04-30 05:58:47','',0,'atnifu');
 /*!40000 ALTER TABLE `wp_users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Local project defaults
+--
+
+UPDATE `wp_options`
+SET `option_value` = 'atnif-figma-theme'
+WHERE `option_name` IN ('template', 'stylesheet');
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
