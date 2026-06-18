@@ -1002,10 +1002,18 @@ select {
         background-image: var(--hero-mobile-background);
     }
 
+    .hero.mb-key-visual__nagi {
+        background-image: var(--hero-mobile-background-nagi);
+    }
+
+    .hero.mb-key-visual__toki {
+        background-image: var(--hero-mobile-background-toki);
+    }
+
     .hero__logo {
         position: absolute;
         left: 50%;
-        bottom: 130px;
+        top: 128px;
         display: block;
         width: 300px;
         transform: translateX(-50%);
