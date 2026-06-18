@@ -80,9 +80,9 @@ select {
 
 .site-header__inner {
     display: grid;
-    grid-template-columns: 214px minmax(0, 1fr);
+    grid-template-columns: auto auto;
     align-items: center;
-    gap: clamp(28px, 8.75vw, 126px);
+    justify-content: space-between;
     width: min(1024px, calc(100% - 40px));
     height: 100%;
     margin: 0 auto;
@@ -91,8 +91,8 @@ select {
 .site-logo {
     display: grid;
     place-items: center;
-    width: 214px;
-    height: 70px;
+    width: 157px;
+    height: 60px;
     color: #000000;
     font-size: 12px;
     line-height: 16px;
@@ -103,7 +103,7 @@ select {
 .site-logo img {
     width: 100%;
     height: auto;
-    transform: translateY(-16px);
+    transform: translateY(-8px);
 }
 
 .site-nav ul {
@@ -147,7 +147,6 @@ select {
     aspect-ratio: 1440 / 960;
     min-height: 0;
     overflow: hidden;
-    padding: 160px 20px 80px;
     background-color: var(--atnif-paper);
     background-image: var(--hero-background);
     background-position: center top;
@@ -880,14 +879,13 @@ select {
     }
 
     .site-header__inner {
-        grid-template-columns: 160px 1fr;
-        gap: 24px;
+        grid-template-columns: auto auto;
         padding: 16px 0;
     }
 
     .site-logo {
-        width: 160px;
-        height: 54px;
+        width: 157px;
+        height: 60px;
     }
 
     .site-nav ul {
