@@ -5,15 +5,6 @@ get_header();
 <main id="main" class="site-main">
     <section class="hero" style="--hero-background: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>'); --hero-mobile-background: url('<?php echo esc_url(atnif_asset_url('images/mobile_mainvisual.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
         <img class="hero__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
-        <?php
-        $hero_image = atnif_image_mod('hero_image', 'hero__image', get_bloginfo('name'), 'full', array(
-            'loading' => 'eager',
-            'fetchpriority' => 'high',
-        ));
-        if ($hero_image) {
-            echo $hero_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        }
-        ?>
     </section>
 
     <section id="story" class="section section--panel section--story" style="background-image: url('<?php echo esc_url(atnif_asset_url('images/story-bg.png')); ?>');" aria-labelledby="story-heading">

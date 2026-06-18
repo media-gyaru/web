@@ -131,7 +131,6 @@ add_action('wp_head', 'atnif_preload_hero_background', 1);
 
 function atnif_default($key) {
     $defaults = array(
-        'hero_image' => '',
         'hero_background' => atnif_asset_url('images/header-bg.png'),
         'story_text' => "転勤族の親に連れられ、日本中を転々としてきた高校生・佐々木巡は、\n幼い頃を過ごした大阪府高槻市へ久しぶりに戻ってくる。引っ越し準備の最中、\n古い段ボールの底から見つけたのは、折れ目だらけの小さなメモ。\nそこには、「またここで会おう」とだけ書かれていた。\n誰が書いたのかも、いつ受け取ったのかも思い出せない。\nそれなのに、その言葉は巡の胸の奥で、ずっと消えずに残っていた約束のように疼きはじめる。\n\n“ここ” とはどこなのか。自分は誰と、何を約束したのか。\n答えのない問いに導かれるように、巡は夏の陽炎に揺れる高槻の街を歩き出す。\nそこで出会うのは、正体も探しものも曖昧なまま旅を続ける少女・なぎ。\n由緒ある神社で、過ぎ去るはずの一日を何度も写し続ける写真部の先輩岡都トキ。\nそして、存在しないはずの映画館で、自分の物語を観てくれる誰かを待ち続けていた少女。\n\n彼女たちと過ごす時間は、巡の失われた記憶を少しずつ照らしていく。\n懐かしい道、夕立の匂い、蝉時雨の境内、スクリーンに映る誰かの恋。\n忘れていたはずの景色の中で、巡は何度も出会い、別れ、そして気づいていく。\n探していたのは、ただの場所ではなかったのだと。\n\n夏の終わり、巡はメモに残された “ここ” の本当の意味へ辿り着く。\nそれは、かつて誰かと交わした小さな約束であり、\n忘れてしまっても消えることのなかった、初恋の残響だった。",
         'scenario_title1' => '√ - なぎ',
@@ -334,7 +333,6 @@ function atnif_customize_register($wp_customize) {
     $image_fields = array(
         'hero' => array(
             'hero_background' => __('Header and hero background image', 'atnif-figma'),
-            'hero_image' => __('Main visual image', 'atnif-figma'),
         ),
         'character' => array(
             'character_image1' => __('Character image 1', 'atnif-figma'),
