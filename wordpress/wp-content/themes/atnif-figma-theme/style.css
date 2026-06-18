@@ -625,11 +625,37 @@ select {
 }
 
 .character__swatch {
+    position: relative;
     width: 112px;
     height: 112px;
+    overflow: hidden;
     border: 0;
     background: var(--atnif-white);
     cursor: pointer;
+    transition: filter 500ms ease;
+}
+
+.character__swatch::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            0deg,
+            rgba(30, 58, 138, 0.7) 0%,
+            rgba(30, 58, 138, 0.7) 100%
+        ),
+        #fff;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+}
+
+.character__swatch:not(.is-active):hover::after {
+    opacity: 1;
+}
+
+.character__swatch:not(.is-active):hover {
+    filter: blur(2px);
 }
 
 .character__swatch--has-icon {
