@@ -18,7 +18,7 @@ function atnif_theme_setup() {
     add_theme_support('html5', array('style', 'script', 'navigation-widgets'));
 
     register_nav_menus(array(
-        'primary' => __('Primary Menu', 'atnif-figma'),
+        'primary' => __('Primary Menu', 'atnif'),
     ));
 }
 add_action('after_setup_theme', 'atnif_theme_setup');
@@ -246,18 +246,18 @@ function atnif_sanitize_story_html($value) {
 
 function atnif_customize_register($wp_customize) {
     $wp_customize->add_panel('atnif_content', array(
-        'title' => __('@Nif Page Content', 'atnif-figma'),
+        'title' => __('@Nif Page Content', 'atnif'),
         'priority' => 30,
     ));
 
     $sections = array(
-        'hero' => __('Main Visual', 'atnif-figma'),
-        'story' => __('Story', 'atnif-figma'),
-        'character' => __('Character', 'atnif-figma'),
-        'gallery' => __('Gallery', 'atnif-figma'),
-        'special' => __('Special', 'atnif-figma'),
-        'game' => __('Game', 'atnif-figma'),
-        'footer' => __('Footer', 'atnif-figma'),
+        'hero' => __('Main Visual', 'atnif'),
+        'story' => __('Story', 'atnif'),
+        'character' => __('Character', 'atnif'),
+        'gallery' => __('Gallery', 'atnif'),
+        'special' => __('Special', 'atnif'),
+        'game' => __('Game', 'atnif'),
+        'footer' => __('Footer', 'atnif'),
     );
 
     foreach ($sections as $id => $title) {
@@ -269,45 +269,45 @@ function atnif_customize_register($wp_customize) {
 
     $text_fields = array(
         'story' => array(
-            'story_text' => array(__('Story text', 'atnif-figma'), 'textarea'),
-            'scenario_title1' => array(__('Scenario title', 'atnif-figma'), 'text'),
-            'scenario_text1' => array(__('Scenario text', 'atnif-figma'), 'textarea'),
-            'scenario_title2' => array(__('Scenario title2', 'atnif-figma'), 'text'),
-            'scenario_text2' => array(__('Scenario text2', 'atnif-figma'), 'textarea'),
-            'scenario_title3' => array(__('Scenario title3', 'atnif-figma'), 'text'),
-            'scenario_text3' => array(__('Scenario text3', 'atnif-figma'), 'textarea'),
+            'story_text' => array(__('Story text', 'atnif'), 'textarea'),
+            'scenario_title1' => array(__('Scenario title', 'atnif'), 'text'),
+            'scenario_text1' => array(__('Scenario text', 'atnif'), 'textarea'),
+            'scenario_title2' => array(__('Scenario title2', 'atnif'), 'text'),
+            'scenario_text2' => array(__('Scenario text2', 'atnif'), 'textarea'),
+            'scenario_title3' => array(__('Scenario title3', 'atnif'), 'text'),
+            'scenario_text3' => array(__('Scenario text3', 'atnif'), 'textarea'),
         ),
         'character' => array(
-            'character_name1' => array(__('Character name', 'atnif-figma'), 'text'),
-            'character_ruby1' => array(__('Character romanization', 'atnif-figma'), 'text'),
-            'character_copy1' => array(__('Character description', 'atnif-figma'), 'textarea'),
-            'character_name2' => array(__('Character name2', 'atnif-figma'), 'text'),
-            'character_ruby2' => array(__('Character romanization2', 'atnif-figma'), 'text'),
-            'character_copy2' => array(__('Character description2', 'atnif-figma'), 'textarea'),
-            'character_name3' => array(__('Character name3', 'atnif-figma'), 'text'),
-            'character_ruby3' => array(__('Character romanization3', 'atnif-figma'), 'text'),
-            'character_copy3' => array(__('Character description3', 'atnif-figma'), 'textarea'),
+            'character_name1' => array(__('Character name', 'atnif'), 'text'),
+            'character_ruby1' => array(__('Character romanization', 'atnif'), 'text'),
+            'character_copy1' => array(__('Character description', 'atnif'), 'textarea'),
+            'character_name2' => array(__('Character name2', 'atnif'), 'text'),
+            'character_ruby2' => array(__('Character romanization2', 'atnif'), 'text'),
+            'character_copy2' => array(__('Character description2', 'atnif'), 'textarea'),
+            'character_name3' => array(__('Character name3', 'atnif'), 'text'),
+            'character_ruby3' => array(__('Character romanization3', 'atnif'), 'text'),
+            'character_copy3' => array(__('Character description3', 'atnif'), 'textarea'),
         ),
         'special' => array(
-            'special_banner_1_label' => array(__('First banner label', 'atnif-figma'), 'text'),
-            'special_banner_1_url' => array(__('First banner URL', 'atnif-figma'), 'url'),
-            'special_banner_2_label' => array(__('Second banner label', 'atnif-figma'), 'text'),
-            'special_banner_2_url' => array(__('Second banner URL', 'atnif-figma'), 'url'),
-            'special_title' => array(__('SNS title', 'atnif-figma'), 'text'),
-            'special_copy' => array(__('SNS copy', 'atnif-figma'), 'textarea'),
-            'x_url' => array(__('X URL', 'atnif-figma'), 'url'),
-            'tiktok_url' => array(__('TikTok URL', 'atnif-figma'), 'url'),
-            'youtube_url' => array(__('YouTube URL', 'atnif-figma'), 'url'),
+            'special_banner_1_label' => array(__('First banner label', 'atnif'), 'text'),
+            'special_banner_1_url' => array(__('First banner URL', 'atnif'), 'url'),
+            'special_banner_2_label' => array(__('Second banner label', 'atnif'), 'text'),
+            'special_banner_2_url' => array(__('Second banner URL', 'atnif'), 'url'),
+            'special_title' => array(__('SNS title', 'atnif'), 'text'),
+            'special_copy' => array(__('SNS copy', 'atnif'), 'textarea'),
+            'x_url' => array(__('X URL', 'atnif'), 'url'),
+            'tiktok_url' => array(__('TikTok URL', 'atnif'), 'url'),
+            'youtube_url' => array(__('YouTube URL', 'atnif'), 'url'),
         ),
         'game' => array(
-            'game_title' => array(__('Game title', 'atnif-figma'), 'text'),
-            'game_status' => array(__('Game status text', 'atnif-figma'), 'text'),
-            'game_link_label' => array(__('Game link label', 'atnif-figma'), 'text'),
-            'game_link_url' => array(__('Game link URL', 'atnif-figma'), 'url'),
-            'game_meta' => array(__('Game details', 'atnif-figma'), 'textarea'),
+            'game_title' => array(__('Game title', 'atnif'), 'text'),
+            'game_status' => array(__('Game status text', 'atnif'), 'text'),
+            'game_link_label' => array(__('Game link label', 'atnif'), 'text'),
+            'game_link_url' => array(__('Game link URL', 'atnif'), 'url'),
+            'game_meta' => array(__('Game details', 'atnif'), 'textarea'),
         ),
         'footer' => array(
-            'footer_text' => array(__('Copyright text', 'atnif-figma'), 'text'),
+            'footer_text' => array(__('Copyright text', 'atnif'), 'text'),
         ),
     );
 
@@ -334,29 +334,29 @@ function atnif_customize_register($wp_customize) {
 
     $image_fields = array(
         'hero' => array(
-            'hero_background' => __('Header and hero background image', 'atnif-figma'),
+            'hero_background' => __('Header and hero background image', 'atnif'),
         ),
         'character' => array(
-            'character_image1' => __('Character image 1', 'atnif-figma'),
-            'character_select_icon1' => __('Character select icon 1', 'atnif-figma'),
-            'character_image2' => __('Character image 2', 'atnif-figma'),
-            'character_select_icon2' => __('Character select icon 2', 'atnif-figma'),
-            'character_image3' => __('Character image 3', 'atnif-figma'),
-            'character_select_icon3' => __('Character select icon 3', 'atnif-figma'),
+            'character_image1' => __('Character image 1', 'atnif'),
+            'character_select_icon1' => __('Character select icon 1', 'atnif'),
+            'character_image2' => __('Character image 2', 'atnif'),
+            'character_select_icon2' => __('Character select icon 2', 'atnif'),
+            'character_image3' => __('Character image 3', 'atnif'),
+            'character_select_icon3' => __('Character select icon 3', 'atnif'),
         ),
         'gallery' => array(
-            'gallery_1' => __('Gallery image 1', 'atnif-figma'),
-            'gallery_2' => __('Gallery image 2', 'atnif-figma'),
-            'gallery_3' => __('Gallery image 3', 'atnif-figma'),
-            'gallery_4' => __('Gallery image 4', 'atnif-figma'),
-            'gallery_5' => __('Gallery image 5', 'atnif-figma'),
-            'gallery_6' => __('Gallery image 6', 'atnif-figma'),
+            'gallery_1' => __('Gallery image 1', 'atnif'),
+            'gallery_2' => __('Gallery image 2', 'atnif'),
+            'gallery_3' => __('Gallery image 3', 'atnif'),
+            'gallery_4' => __('Gallery image 4', 'atnif'),
+            'gallery_5' => __('Gallery image 5', 'atnif'),
+            'gallery_6' => __('Gallery image 6', 'atnif'),
         ),
         'special' => array(
-            'special_image' => __('Special illustration', 'atnif-figma'),
+            'special_image' => __('Special illustration', 'atnif'),
         ),
         'game' => array(
-            'game_badge' => __('Game badge image', 'atnif-figma'),
+            'game_badge' => __('Game badge image', 'atnif'),
         ),
     );
 
