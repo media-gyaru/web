@@ -3,7 +3,7 @@ get_header();
 ?>
 
 <main id="main" class="site-main">
-    <section class="hero" style="--hero-background: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>'); --hero-mobile-background: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-nagi: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-toki: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__toki.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif-figma'); ?>">
+    <section class="hero" style="--hero-background: url('<?php echo esc_url(atnif_asset_url('images/key-visual.png')); ?>'); --hero-mobile-background: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-nagi: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__nagi.png')); ?>'); --hero-mobile-background-toki: url('<?php echo esc_url(atnif_asset_url('images/mb-key-visual__toki.png')); ?>');" aria-label="<?php esc_attr_e('Main visual', 'atnif'); ?>">
         <img class="hero__logo" src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
     </section>
 
@@ -37,11 +37,11 @@ get_header();
                 <h2 class="scenario__title" data-slider-title><?php echo wp_kses_post(atnif_mod('scenario_title1')); ?></h2>
                 <div class="scenario__body">
                     <button class="arrow-button arrow-left" type="button" data-slider-prev>
-                        <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif-figma'); ?></span>
+                        <span class="screen-reader-text"><?php esc_html_e('Previous scenario', 'atnif'); ?></span>
                     </button>
                     <p class="scenario__text" data-slider-text><?php echo wp_kses_post(atnif_mod('scenario_text1')); ?></p>
                     <button class="arrow-button arrow-right" type="button" data-slider-next>
-                        <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif-figma'); ?></span>
+                        <span class="screen-reader-text"><?php esc_html_e('Next scenario', 'atnif'); ?></span>
                     </button>
                 </div>
                 <div class="pager" aria-hidden="true">
@@ -109,7 +109,7 @@ get_header();
                             $select_icon_style = $select_icon ? '--character-select-icon: url(' . esc_url($select_icon) . ');' : '';
                             ?>
                             <button class="<?php echo esc_attr(implode(' ', $button_classes)); ?>" type="button" data-character-button="<?php echo esc_attr($i - 1); ?>" aria-pressed="<?php echo $i === 1 ? 'true' : 'false'; ?>"<?php echo $select_icon_style ? ' style="' . esc_attr($select_icon_style) . '"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-                                <span class="screen-reader-text"><?php echo esc_html(sprintf(__('Show character %d', 'atnif-figma'), $i)); ?></span>
+                                <span class="screen-reader-text"><?php echo esc_html(sprintf(__('Show character %d', 'atnif'), $i)); ?></span>
                             </button>
                         <?php endfor; ?>
                     </div>
@@ -132,14 +132,14 @@ get_header();
                         <?php
                         $gallery_key = 'gallery_' . $i;
                         $gallery_image_url = atnif_image_url_mod($gallery_key);
-                        $gallery_image = atnif_image_mod($gallery_key, '', sprintf(__('Gallery image %d', 'atnif-figma'), $i));
+                        $gallery_image = atnif_image_mod($gallery_key, '', sprintf(__('Gallery image %d', 'atnif'), $i));
                         if ($gallery_image) {
                             echo $gallery_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                             if (basename((string) parse_url($gallery_image_url, PHP_URL_PATH)) === 'comingsoon.png') {
-                                echo '<span class="gallery-grid__coming-soon">' . esc_html__('Coming Soon', 'atnif-figma') . '</span>';
+                                echo '<span class="gallery-grid__coming-soon">' . esc_html__('Coming Soon', 'atnif') . '</span>';
                             }
                         } elseif ($i === 1) {
-                            esc_html_e('写真', 'atnif-figma');
+                            esc_html_e('写真', 'atnif');
                         }
                         ?>
                     </div>
@@ -179,7 +179,7 @@ get_header();
                 </div>
                 </div>
                 <?php
-                $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif-figma'));
+                $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif'));
                 if ($special_image) {
                     echo $special_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 }
@@ -208,7 +208,7 @@ get_header();
                     <?php endif; ?>
                     <p class="game__meta"><?php echo atnif_textarea(atnif_mod('game_meta')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                     <?php
-                    $game_badge = atnif_image_mod('game_badge', 'game__badge', __('Game badge', 'atnif-figma'));
+                    $game_badge = atnif_image_mod('game_badge', 'game__badge', __('Game badge', 'atnif'));
                     if ($game_badge) {
                         echo $game_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     }

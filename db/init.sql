@@ -404,7 +404,7 @@ UNLOCK TABLES;
 --
 
 UPDATE `wp_options`
-SET `option_value` = 'atnif-figma-theme'
+SET `option_value` = 'atnif-theme'
 WHERE `option_name` IN ('template', 'stylesheet');
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

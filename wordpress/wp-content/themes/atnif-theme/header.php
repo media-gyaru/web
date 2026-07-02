@@ -18,9 +18,9 @@
 <?php wp_body_open(); ?>
 <button class="fixed-nav-btn" type="button" aria-controls="mobile-nav" aria-expanded="false" data-mobile-nav-open>
     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/nav-btn.svg'); ?>" alt="">
-    <span class="screen-reader-text"><?php esc_html_e('Open navigation', 'atnif-figma'); ?></span>
+    <span class="screen-reader-text"><?php esc_html_e('Open navigation', 'atnif'); ?></span>
 </button>
-<nav id="mobile-nav" class="mobile-nav-panel" aria-label="<?php esc_attr_e('Mobile navigation', 'atnif-figma'); ?>" aria-hidden="true" data-mobile-nav>
+<nav id="mobile-nav" class="mobile-nav-panel" aria-label="<?php esc_attr_e('Mobile navigation', 'atnif'); ?>" aria-hidden="true" data-mobile-nav>
     <p class="mobile-nav-panel__label">MENU</p>
     <ul class="mobile-nav-panel__list">
         <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
@@ -32,7 +32,7 @@
             </li>
         <?php endforeach; ?>
     </ul>
-    <button class="mobile-nav-panel__close" type="button" aria-label="<?php esc_attr_e('Close navigation', 'atnif-figma'); ?>" data-mobile-nav-close></button>
+    <button class="mobile-nav-panel__close" type="button" aria-label="<?php esc_attr_e('Close navigation', 'atnif'); ?>" data-mobile-nav-close></button>
 </nav>
 <div class="site-shell">
     <header class="site-header">
@@ -40,7 +40,7 @@
             <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
             </a>
-            <nav class="site-nav" aria-label="<?php esc_attr_e('Primary navigation', 'atnif-figma'); ?>">
+            <nav class="site-nav" aria-label="<?php esc_attr_e('Primary navigation', 'atnif'); ?>">
                 <ul>
                     <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
                         <li>
