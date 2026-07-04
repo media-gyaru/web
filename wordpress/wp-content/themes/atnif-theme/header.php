@@ -4,7 +4,9 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="SPMgwl0H6buxpFyCnFkpV2fi2s45zgu_gpFD1Em8GLU" />
-    <link rel="canonical" href="https://atonif.com/" />
+    <?php if (function_exists('wp_get_canonical_url') && wp_get_canonical_url()) : ?>
+        <link rel="canonical" href="<?php echo esc_url(wp_get_canonical_url()); ?>" />
+    <?php endif; ?>
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -25,7 +27,7 @@
     <ul class="mobile-nav-panel__list">
         <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
             <li>
-                <a class="mobile-nav-panel__link" href="#<?php echo esc_attr($anchor); ?>" data-mobile-nav-link>
+                <a class="mobile-nav-panel__link" href="<?php echo esc_url(atnif_nav_url($anchor)); ?>" data-mobile-nav-link>
                     <span class="mobile-nav-panel__en"><?php echo esc_html($labels[0]); ?></span>
                     <span class="mobile-nav-panel__ja"><?php echo esc_html($labels[1]); ?></span>
                 </a>
@@ -44,7 +46,7 @@
                 <ul>
                     <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
                         <li>
-                            <a href="#<?php echo esc_attr($anchor); ?>">
+                            <a href="<?php echo esc_url(atnif_nav_url($anchor)); ?>">
                                 <span class="site-nav__en"><?php echo esc_html($labels[0]); ?></span>
                                 <span class="site-nav__ja"><?php echo esc_html($labels[1]); ?></span>
                             </a>

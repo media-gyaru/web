@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('ATNIF_THEME_VERSION', '1.0.1');
+define('ATNIF_REWRITE_VERSION', '1');
 
 function atnif_theme_setup() {
     add_theme_support('title-tag');
@@ -77,6 +78,85 @@ function atnif_dequeue_frontend_admin_assets() {
     wp_dequeue_script('googlesitekit-adminbar');
 }
 add_action('wp_enqueue_scripts', 'atnif_dequeue_frontend_admin_assets', 100);
+
+function atnif_add_rewrite_rules() {
+    add_rewrite_rule('^blog/?$', 'index.php?atnif_blog=1', 'top');
+    add_rewrite_rule('^blog/page/([0-9]+)/?$', 'index.php?atnif_blog=1&paged=$matches[1]', 'top');
+}
+add_action('init', 'atnif_add_rewrite_rules');
+
+function atnif_query_vars($vars) {
+    $vars[] = 'atnif_blog';
+
+    return $vars;
+}
+add_filter('query_vars', 'atnif_query_vars');
+
+function atnif_blog_request_path() {
+    $request_path = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+    $request_path = parse_url($request_path, PHP_URL_PATH);
+    $request_path = $request_path ? '/' . trim($request_path, '/') . '/' : '/';
+
+    $home_path = parse_url(home_url('/'), PHP_URL_PATH);
+    $home_path = $home_path ? '/' . trim($home_path, '/') . '/' : '/';
+
+    if ('/' !== $home_path && strpos($request_path, $home_path) === 0) {
+        $request_path = '/' . ltrim(substr($request_path, strlen($home_path)), '/');
+        $request_path = '/' === $request_path ? '/' : '/' . trim($request_path, '/') . '/';
+    }
+
+    return $request_path;
+}
+
+function atnif_is_blog_request() {
+    $request_path = atnif_blog_request_path();
+
+    return (bool) get_query_var('atnif_blog') || '/blog/' === $request_path || preg_match('#^/blog/page/[0-9]+/$#', $request_path);
+}
+
+function atnif_blog_current_page() {
+    $paged = max(1, (int) get_query_var('paged'), (int) get_query_var('page'));
+    $request_path = atnif_blog_request_path();
+
+    if (preg_match('#^/blog/page/([0-9]+)/$#', $request_path, $matches)) {
+        $paged = max($paged, (int) $matches[1]);
+    }
+
+    return $paged;
+}
+
+function atnif_flush_rewrite_rules_once() {
+    if (get_option('atnif_rewrite_version') === ATNIF_REWRITE_VERSION) {
+        return;
+    }
+
+    atnif_add_rewrite_rules();
+    flush_rewrite_rules(false);
+    update_option('atnif_rewrite_version', ATNIF_REWRITE_VERSION);
+}
+add_action('init', 'atnif_flush_rewrite_rules_once', 20);
+
+function atnif_blog_template($template) {
+    if (atnif_is_blog_request()) {
+        $blog_template = get_template_directory() . '/blog.php';
+
+        if (file_exists($blog_template)) {
+            return $blog_template;
+        }
+    }
+
+    return $template;
+}
+add_filter('template_include', 'atnif_blog_template');
+
+function atnif_blog_document_title($title) {
+    if (atnif_is_blog_request()) {
+        $title['title'] = __('Blog', 'atnif');
+    }
+
+    return $title;
+}
+add_filter('document_title_parts', 'atnif_blog_document_title');
 
 function atnif_asset_url($path) {
     $path = ltrim($path, '/');
@@ -382,7 +462,19 @@ function atnif_nav_items() {
         'character' => array('Character', '登場人物'),
         'gallery' => array('Gallery', '写真展示'),
         'special' => array('Special', 'おたのしみ'),
-        // 'blog' => array('Blog', 'ブログ'),
+        'blog' => array('Blog', 'ブログ'),
         'game' => array('Game', 'ゲーム'),
     );
+}
+
+function atnif_nav_url($anchor) {
+    if ('blog' === $anchor) {
+        return home_url('/blog/');
+    }
+
+    if (is_front_page() || is_home()) {
+        return '#' . $anchor;
+    }
+
+    return home_url('/#' . $anchor);
 }
