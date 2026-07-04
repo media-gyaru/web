@@ -303,7 +303,9 @@ select {
 }
 
 .section--story {
-    aspect-ratio: 1440 / 2156;
+    aspect-ratio: auto;
+    min-height: calc(100vw * 2156 / 1440);
+    background-size: 100% 100%;
 }
 
 .section--character {
@@ -336,6 +338,10 @@ select {
 
 .section--panel[style] {
     background-color: var(--atnif-panel);
+}
+
+.section--story[style] {
+    background-color: var(--atnif-white);
 }
 
 .section__inner {
