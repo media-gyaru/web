@@ -46,7 +46,8 @@
                 <ul>
                     <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
                         <li>
-                            <a href="<?php echo esc_url(atnif_nav_url($anchor)); ?>">
+                            <?php $is_current = 'blog' === $anchor && function_exists('atnif_is_blog_request') && atnif_is_blog_request(); ?>
+                            <a href="<?php echo esc_url(atnif_nav_url($anchor)); ?>"<?php echo $is_current ? ' class="is-current" aria-current="page"' : ''; ?>>
                                 <span class="site-nav__en"><?php echo esc_html($labels[0]); ?></span>
                                 <span class="site-nav__ja"><?php echo esc_html($labels[1]); ?></span>
                             </a>

@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ATNIF_THEME_VERSION', '1.0.1');
+define('ATNIF_THEME_VERSION', '1.0.2');
 define('ATNIF_REWRITE_VERSION', '1');
 
 // テーマで使う基本機能とナビゲーションメニューを有効化
@@ -27,7 +27,7 @@ add_action('after_setup_theme', 'atnif_theme_setup');
 
 // フロント側で使うCSS、Google Fonts、JavaScriptを読み込む
 function atnif_enqueue_assets() {
-    wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&display=swap', array(), null);
+    wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700&display=swap', array(), null);
     wp_enqueue_style('atnif-style', get_stylesheet_uri(), array(), ATNIF_THEME_VERSION);
     wp_enqueue_script('atnif-main', get_template_directory_uri() . '/assets/js/main.js', array(), ATNIF_THEME_VERSION, true);
 }
@@ -148,10 +148,10 @@ function atnif_flush_rewrite_rules_once() {
 }
 add_action('init', 'atnif_flush_rewrite_rules_once', 20);
 
-// 独自ブログページではblog.phpテンプレートを使用
+// 独自ブログページではpage-blog.phpテンプレートを使用
 function atnif_blog_template($template) {
     if (atnif_is_blog_request()) {
-        $blog_template = get_template_directory() . '/blog.php';
+        $blog_template = get_template_directory() . '/page-blog.php';
 
         if (file_exists($blog_template)) {
             return $blog_template;
@@ -448,7 +448,6 @@ function atnif_customize_register($wp_customize) {
             'character_select_icon1' => __('Character select icon 1', 'atnif'),
             'character_image2' => __('Character image 2', 'atnif'),
             'character_select_icon2' => __('Character select icon 2', 'atnif'),
-            'character_image3' => __('Character image 3', 'atnif'),
             'character_select_icon3' => __('Character select icon 3', 'atnif'),
         ),
         'gallery' => array(
