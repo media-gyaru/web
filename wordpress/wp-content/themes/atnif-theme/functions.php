@@ -500,7 +500,8 @@ function atnif_nav_url($anchor) {
         return home_url('/blog/');
     }
 
-    if (is_front_page() || is_home()) {
+    // /blog/ は独自クエリでトップページ判定が残るため、明示的に除外
+    if (!atnif_is_blog_request() && (is_front_page() || is_home())) {
         return '#' . $anchor;
     }
 
