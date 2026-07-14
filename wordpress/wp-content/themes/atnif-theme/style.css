@@ -200,7 +200,6 @@ select {
     z-index: 100;
     display: block;
     width: 208px;
-    height: 412px;
     padding: 21px 20px 24px;
     background: var(--atnif-blue);
     color: var(--atnif-white);
@@ -1228,7 +1227,8 @@ select {
     }
 
     .blog-page .section-heading {
-        grid-template-columns: minmax(40px, 1fr) 216px minmax(40px, 1fr);
+        grid-template-columns: minmax(20px, 1fr) minmax(0, 216px) minmax(20px, 1fr);
+        gap: 12px;
     }
 
     .blog-list {

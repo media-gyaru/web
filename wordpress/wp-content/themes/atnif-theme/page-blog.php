@@ -49,7 +49,7 @@ get_header();
 
                                 <div class="blog-card__body">
                                     <time class="blog-card__date" datetime="<?php echo esc_attr(get_the_date('c')); ?>">
-                                        <?php echo esc_html(get_the_date()); ?>
+                                        <?php echo esc_html(get_the_date('Y-m-d')); ?>
                                     </time>
                                     <h2 class="blog-card__title"><?php the_title(); ?></h2>
                                     <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 42)); ?></p>
