@@ -15,15 +15,16 @@ get_header();
             <article <?php post_class('blog-post'); ?>>
                 <header class="blog-post__header">
                     <a class="blog-post__back" href="<?php echo esc_url(home_url('/blog/')); ?>">
-                        <span aria-hidden="true">←</span>
-                        <?php esc_html_e('ブログ一覧へ', 'atnif'); ?>
+                        <span aria-hidden="true">←
+                            <?php esc_html_e('ブログ一覧へ', 'atnif'); ?>
+                        </span>
                     </a>
 
                     <h1 class="blog-post__title"><?php the_title(); ?></h1>
 
                     <div class="blog-post__meta">
                         <time class="blog-post__date" datetime="<?php echo esc_attr(get_the_date('c')); ?>">
-                            <?php echo esc_html(get_the_date()); ?>
+                            <?php echo esc_html(get_the_date('Y-m-d')); ?>
                         </time>
 
                         <?php $categories = get_the_category(); ?>
@@ -34,11 +35,6 @@ get_header();
                             </span>
                         <?php endif; ?>
                     </div>
-
-                    <p class="blog-post__author">
-                        <?php echo get_avatar(get_the_author_meta('ID'), 36, '', '', array('class' => 'blog-post__author-avatar')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                        <span><?php the_author(); ?></span>
-                    </p>
                 </header>
 
                 <?php if (has_post_thumbnail()) : ?>
@@ -86,12 +82,6 @@ get_header();
                             <span></span>
                         <?php endif; ?>
                     </nav>
-                <?php endif; ?>
-
-                <?php if (comments_open() || get_comments_number()) : ?>
-                    <div class="blog-post__comments">
-                        <?php comments_template(); ?>
-                    </div>
                 <?php endif; ?>
             </article>
         <?php endwhile; ?>
