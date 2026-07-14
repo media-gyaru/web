@@ -31,7 +31,7 @@ get_header();
                     <?php while ($blog_query->have_posts()) : ?>
                         <?php $blog_query->the_post(); ?>
                         <article <?php post_class('blog-card'); ?>>
-                            <a class="blog-card__link" href="<?php the_permalink(); ?>">
+                            <a class="blog-card__link" href="<?php echo esc_url(atnif_blog_post_url(get_the_ID())); ?>">
                                 <?php
                                 $categories = get_the_category();
                                 $category_names = wp_list_pluck($categories, 'name');
