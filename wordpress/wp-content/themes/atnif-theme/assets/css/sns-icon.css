@@ -1,0 +1,124 @@
+.sns-icon-page {
+    min-height: 879px;
+    background: var(--sns-icon-background) center top / cover no-repeat;
+}
+
+.sns-icon-page__content {
+    display: grid;
+    justify-items: center;
+    min-height: 879px;
+    padding: 161px 20px 80px;
+}
+
+.sns-icon-page__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    width: min(896px, 100%);
+}
+
+.sns-icon-page__heading {
+    width: 100%;
+}
+
+.sns-icon-page__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    width: 100%;
+}
+
+.sns-icon-page__intro {
+    color: var(--atnif-blue);
+    font-size: 18px;
+    line-height: 36px;
+    text-align: center;
+}
+
+.sns-icon-page__intro p,
+.sns-icon-page__notice {
+    margin: 0;
+}
+
+.sns-icon-page__notice {
+    max-width: 100%;
+    padding: 0 20px;
+    background: var(--atnif-blue);
+    color: var(--atnif-white);
+    font-size: 18px;
+    line-height: 36px;
+    text-align: center;
+}
+
+.sns-icon-page__downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    justify-content: center;
+    margin-top: -20px;
+}
+
+.sns-icon-page__download {
+    display: block;
+    width: 300px;
+    border-radius: 50%;
+    transition: transform 180ms ease, filter 180ms ease;
+}
+
+.sns-icon-page__download:hover {
+    filter: brightness(1.04);
+    transform: scale(1.03);
+}
+
+.sns-icon-page__download:focus-visible {
+    outline: 3px solid var(--atnif-blue);
+    outline-offset: 8px;
+}
+
+.sns-icon-page__download img {
+    width: 100%;
+    border-radius: inherit;
+}
+
+@media (max-width: 760px) {
+    .sns-icon-page,
+    .sns-icon-page__content {
+        min-height: auto;
+    }
+
+    .sns-icon-page__content {
+        padding: 120px 20px 72px;
+    }
+
+    .sns-icon-page__inner {
+        gap: 48px;
+    }
+
+    .sns-icon-page__body {
+        gap: 32px;
+    }
+
+    .sns-icon-page__intro {
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+    .sns-icon-page__notice {
+        padding: 8px 14px;
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .sns-icon-page__downloads {
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+        margin-top: -16px;
+    }
+
+    .sns-icon-page__download {
+        width: min(300px, 100%);
+    }
+}

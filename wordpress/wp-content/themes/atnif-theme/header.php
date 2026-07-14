@@ -25,7 +25,7 @@
     <ul class="mobile-nav-panel__list">
         <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
             <li>
-                <a class="mobile-nav-panel__link" href="#<?php echo esc_attr($anchor); ?>" data-mobile-nav-link>
+                <a class="mobile-nav-panel__link" href="<?php echo esc_url(atnif_nav_url($anchor)); ?>" data-mobile-nav-link>
                     <span class="mobile-nav-panel__en"><?php echo esc_html($labels[0]); ?></span>
                     <span class="mobile-nav-panel__ja"><?php echo esc_html($labels[1]); ?></span>
                 </a>
@@ -44,7 +44,7 @@
                 <ul>
                     <?php foreach (atnif_nav_items() as $anchor => $labels) : ?>
                         <li>
-                            <a href="#<?php echo esc_attr($anchor); ?>">
+                            <a href="<?php echo esc_url(atnif_nav_url($anchor)); ?>">
                                 <span class="site-nav__en"><?php echo esc_html($labels[0]); ?></span>
                                 <span class="site-nav__ja"><?php echo esc_html($labels[1]); ?></span>
                             </a>

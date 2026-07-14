@@ -26,6 +26,11 @@ add_action('after_setup_theme', 'atnif_theme_setup');
 function atnif_enqueue_assets() {
     wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&display=swap', array(), null);
     wp_enqueue_style('atnif-style', get_stylesheet_uri(), array(), ATNIF_THEME_VERSION);
+
+    if (is_page_template('page-sns-icon.php')) {
+        wp_enqueue_style('atnif-sns-icon', get_template_directory_uri() . '/assets/css/sns-icon.css', array('atnif-style'), ATNIF_THEME_VERSION);
+    }
+
     wp_enqueue_script('atnif-main', get_template_directory_uri() . '/assets/js/main.js', array(), ATNIF_THEME_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'atnif_enqueue_assets');
@@ -385,4 +390,8 @@ function atnif_nav_items() {
         // 'blog' => array('Blog', 'ブログ'),
         'game' => array('Game', 'ゲーム'),
     );
+}
+
+function atnif_nav_url($anchor) {
+    return home_url('/#' . sanitize_key($anchor));
 }

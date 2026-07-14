@@ -750,6 +750,17 @@ select {
     text-decoration: none;
 }
 
+.special__banner--sns {
+    display: block;
+    background: transparent;
+}
+
+.special__banner--sns img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .special__content {
     position: absolute;
     top: 0;
