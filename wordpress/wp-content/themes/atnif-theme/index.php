@@ -163,7 +163,7 @@ get_header();
                     $sns_icon_url = $sns_icon_page ? get_permalink($sns_icon_page) : home_url('/sns-icon/');
                     ?>
                     <a class="special__banner special__banner--sns" href="<?php echo esc_url($sns_icon_url); ?>">
-                        <img src="<?php echo esc_url(atnif_asset_url('images/sns-banner.png')); ?>" alt="<?php esc_attr_e('SNSアイコン配布ページ', 'atnif'); ?>" width="448" height="128">
+                        <img src="<?php echo esc_url(atnif_asset_url('images/sns-banner.webp')); ?>" alt="<?php esc_attr_e('SNSアイコン配布ページ', 'atnif'); ?>" width="448" height="128">
                     </a>
 
                     <?php for ($i = 2; $i <= 2; $i++) : ?>

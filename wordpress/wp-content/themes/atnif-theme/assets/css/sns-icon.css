@@ -64,7 +64,9 @@
     display: block;
     width: 300px;
     border-radius: 50%;
-    transition: transform 180ms ease, filter 180ms ease;
+    transition:
+        transform 180ms ease,
+        filter 180ms ease;
 }
 
 .sns-icon-page__download:hover {
@@ -112,6 +114,7 @@
     }
 
     .sns-icon-page__downloads {
+        align-items: center;
         flex-direction: column;
         gap: 24px;
         width: 100%;
