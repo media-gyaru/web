@@ -30,6 +30,11 @@ function atnif_enqueue_assets() {
     wp_enqueue_style('atnif-google-fonts', 'https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700&display=swap', array(), null);
     wp_enqueue_style('atnif-style', get_stylesheet_uri(), array(), ATNIF_THEME_VERSION);
 
+
+    if (is_page_template('page-sns-icon.php')) {
+        wp_enqueue_style('atnif-sns-icon', get_template_directory_uri() . '/assets/css/sns-icon.css', array('atnif-style'), ATNIF_THEME_VERSION);
+    }
+
     if (atnif_is_blog_post_request()) {
         wp_enqueue_style(
             'atnif-blog-post',
@@ -582,8 +587,9 @@ function atnif_nav_items() {
     );
 }
 
-// ナビゲーション項目のリンク先URLを現在ページに応じて生成
 function atnif_nav_url($anchor) {
+    $anchor = sanitize_key($anchor);
+
     if ('blog' === $anchor) {
         return home_url('/blog/');
     }
