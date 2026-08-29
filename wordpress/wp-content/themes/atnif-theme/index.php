@@ -158,7 +158,11 @@ get_header();
             </h2>
             <div class="special">
                 <div class="special__banners">
-                    <?php for ($i = 1; $i <= 2; $i++) : ?>
+                    <a class="special__banner special__banner--sns" href="<?php echo esc_url(home_url('/sns-icon/')); ?>">
+                        <img src="<?php echo esc_url(atnif_asset_url('images/sns-banner.webp')); ?>" alt="<?php esc_attr_e('SNSアイコン配布ページ', 'atnif'); ?>" width="448" height="128">
+                    </a>
+
+                    <?php for ($i = 2; $i <= 2; $i++) : ?>
                         <?php $banner_url = atnif_mod('special_banner_' . $i . '_url'); ?>
                         <?php if ($banner_url) : ?>
                             <a class="special__banner" href="<?php echo esc_url($banner_url); ?>">
