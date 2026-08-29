@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('ATNIF_THEME_VERSION', '1.0.3');
-define('ATNIF_REWRITE_VERSION', '4');
+define('ATNIF_REWRITE_VERSION', '5');
 define('ATNIF_CONTENT_CLEANUP_VERSION', '1');
 define('ATNIF_CANONICAL_ORIGIN', 'https://atonif.com');
 
@@ -189,7 +189,7 @@ add_action('wp_enqueue_scripts', 'atnif_dequeue_frontend_admin_assets', 100);
 // 独自ページのURLをWordPressのクエリに変換する
 function atnif_add_rewrite_rules() {
     add_rewrite_rule('^sns-icon/?$', 'index.php?atnif_sns_icon=1', 'top');
-    add_rewrite_rule('^blog/([0-9]+)/?$', 'index.php?p=$matches[1]&post_type=post&atnif_blog_post=1', 'top');
+    add_rewrite_rule('^blog/([0-9]+)/?$', 'index.php?p=$matches[1]&post_type=post&atnif_blog_post=$matches[1]', 'top');
     add_rewrite_rule('^blog/?$', 'index.php?atnif_blog=1', 'top');
     add_rewrite_rule('^blog/page/([0-9]+)/?$', 'index.php?atnif_blog=1&paged=$matches[1]', 'top');
 }
@@ -245,10 +245,14 @@ function atnif_is_blog_post_request() {
 
 // リライトルールまたはリクエストパスからブログ詳細の投稿IDを取得する
 function atnif_blog_post_id() {
-    $post_id = absint(get_query_var('atnif_blog_post'));
+    $blog_post_id = absint(get_query_var('atnif_blog_post'));
 
-    if ($post_id) {
-        return $post_id;
+    if ($blog_post_id) {
+        // 旧リライトルールでは atnif_blog_post が固定値 1 だったため、
+        // 実際の投稿IDが入っている p を優先して既存URLも正しく処理する。
+        $queried_post_id = absint(get_query_var('p'));
+
+        return $queried_post_id ?: $blog_post_id;
     }
 
     $request_path = atnif_blog_request_path();
