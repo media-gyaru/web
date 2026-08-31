@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('ATNIF_THEME_VERSION', '1.0.3');
+
 define('ATNIF_REWRITE_VERSION', '6');
 define('ATNIF_CONTENT_CLEANUP_VERSION', '1');
 define('ATNIF_CANONICAL_ORIGIN', 'https://atonif.com');
@@ -243,12 +244,15 @@ function atnif_is_blog_post_request() {
     return '' !== atnif_blog_post_path_segment();
 }
 
-// リクエストパスからブログ詳細部分の投稿IDまたはスラッグを取得する
-function atnif_blog_post_path_segment() {
-    $request_path = atnif_blog_request_path();
+// リライトルールまたはリクエストパスからブログ詳細の投稿IDを取得する
+function atnif_blog_post_id() {
+    $blog_post_id = absint(get_query_var('atnif_blog_post'));
 
-    if (!preg_match('#^/blog/([^/]+)/$#', $request_path, $matches)) {
-        return '';
+    if ($blog_post_id) {
+        // 旧リライトルールでは固定値1が入るため、実際の投稿IDであるpを優先する。
+        $queried_post_id = absint(get_query_var('p'));
+
+        return $queried_post_id ?: $blog_post_id;
     }
 
     return sanitize_title(rawurldecode($matches[1]));
@@ -272,7 +276,27 @@ function atnif_blog_post_id() {
     return $post instanceof WP_Post ? (int) $post->ID : 0;
 }
 
-// リライトルールが未更新の環境でもIDまたはスラッグから対象投稿を取得する
+// パーマリンク設定が「基本」の環境でも、クエリ判定前に /blog/{id}/ を単一投稿へ変換する
+function atnif_route_blog_post_request($query_vars) {
+    $request_path = atnif_blog_request_path();
+
+    if (!preg_match('#^/blog/([0-9]+)/$#', $request_path, $matches)) {
+        return $query_vars;
+    }
+
+    $post_id = absint($matches[1]);
+
+    $query_vars['p'] = $post_id;
+    $query_vars['post_type'] = 'post';
+    $query_vars['atnif_blog_post'] = $post_id;
+
+    unset($query_vars['name'], $query_vars['pagename'], $query_vars['page_id']);
+
+    return $query_vars;
+}
+add_filter('request', 'atnif_route_blog_post_request', 1);
+
+// リライトルールが未更新の環境でも /blog/{id}/ を対象投稿の単体クエリとして扱う
 function atnif_route_blog_post_query($query) {
     if (is_admin() || !$query->is_main_query()) {
         return;
@@ -342,6 +366,16 @@ function atnif_disable_default_blog_post_canonical_redirect($redirect_url) {
     return $redirect_url;
 }
 add_filter('redirect_canonical', 'atnif_disable_default_blog_post_canonical_redirect');
+
+// 管理画面、REST API、テーマ内の投稿URLを独自ブログURLへ統一する
+function atnif_filter_blog_post_permalink($permalink, $post) {
+    if (!$post instanceof WP_Post || 'post' !== $post->post_type) {
+        return $permalink;
+    }
+
+    return atnif_blog_post_url($post->ID);
+}
+add_filter('post_link', 'atnif_filter_blog_post_permalink', 10, 2);
 
 // 独自ブログページで表示すべき現在のページ番号を取得
 function atnif_blog_current_page() {
