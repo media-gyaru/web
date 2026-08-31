@@ -5,7 +5,94 @@ if (!defined('ABSPATH')) {
 }
 
 define('ATNIF_THEME_VERSION', '1.0.3');
-define('ATNIF_REWRITE_VERSION', '4');
+
+define('ATNIF_REWRITE_VERSION', '6');
+define('ATNIF_CONTENT_CLEANUP_VERSION', '1');
+define('ATNIF_CANONICAL_ORIGIN', 'https://atonif.com');
+
+// 公開URLをHTTPSへ統一し、不要なサンプルページはトップへ転送する
+function atnif_redirect_legacy_urls() {
+    if (wp_doing_cron() || (defined('WP_CLI') && WP_CLI)) {
+        return;
+    }
+
+    $host = isset($_SERVER['HTTP_HOST']) ? strtolower((string) wp_unslash($_SERVER['HTTP_HOST'])) : '';
+    $host = preg_replace('/:\d+$/', '', $host);
+
+    if ('atonif.com' !== $host) {
+        return;
+    }
+
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '/';
+    $request_path = (string) parse_url($request_uri, PHP_URL_PATH);
+    $forwarded_proto = isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+        ? strtolower(trim(explode(',', (string) wp_unslash($_SERVER['HTTP_X_FORWARDED_PROTO']))[0]))
+        : '';
+    $is_https = is_ssl() || 'https' === $forwarded_proto;
+
+    if ('/sample-page' === rtrim($request_path, '/')) {
+        wp_redirect(ATNIF_CANONICAL_ORIGIN . '/', 301, 'atnif-theme');
+        exit;
+    }
+
+    if (!$is_https) {
+        $safe_request_uri = wp_validate_redirect($request_uri, '/');
+        wp_redirect(ATNIF_CANONICAL_ORIGIN . $safe_request_uri, 301, 'atnif-theme');
+        exit;
+    }
+}
+add_action('wp_loaded', 'atnif_redirect_legacy_urls', 0);
+
+// WordPressが.htaccessを更新するときも、PHPより前に同じ301転送を適用する
+function atnif_prepend_canonical_rewrite_rules($rules) {
+    $canonical_rules = "RewriteCond %{HTTP_HOST} ^atonif\\.com$ [NC]\n"
+        . "RewriteRule ^sample-page/?$ https://atonif.com/ [R=301,L]\n"
+        . "RewriteCond %{HTTP_HOST} ^atonif\\.com$ [NC]\n"
+        . "RewriteCond %{HTTPS} !=on\n"
+        . "RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]\n"
+        . "RewriteRule ^ https://atonif.com%{REQUEST_URI} [R=301,L]\n";
+
+    return $canonical_rules . $rules;
+}
+add_filter('mod_rewrite_rules', 'atnif_prepend_canonical_rewrite_rules');
+
+// 初期作成されたサンプルページを一度だけゴミ箱へ移動する
+function atnif_cleanup_sample_page_once() {
+    if (get_option('atnif_content_cleanup_version') === ATNIF_CONTENT_CLEANUP_VERSION) {
+        return;
+    }
+
+    $sample_page = get_page_by_path('sample-page', OBJECT, 'page');
+
+    if ($sample_page instanceof WP_Post && 'trash' !== $sample_page->post_status) {
+        $trashed_post = wp_trash_post($sample_page->ID);
+
+        if (!$trashed_post) {
+            return;
+        }
+    }
+
+    update_option('atnif_content_cleanup_version', ATNIF_CONTENT_CLEANUP_VERSION);
+}
+add_action('init', 'atnif_cleanup_sample_page_once', 30);
+
+// 削除処理前でもサンプルページを標準サイトマップへ掲載しない
+function atnif_exclude_sample_page_from_sitemap($query_args, $post_type) {
+    if ('page' !== $post_type) {
+        return $query_args;
+    }
+
+    $sample_page = get_page_by_path('sample-page', OBJECT, 'page');
+
+    if ($sample_page instanceof WP_Post) {
+        $excluded_ids = isset($query_args['post__not_in']) ? (array) $query_args['post__not_in'] : array();
+        $excluded_ids[] = $sample_page->ID;
+        $query_args['post__not_in'] = array_values(array_unique(array_map('absint', $excluded_ids)));
+    }
+
+    return $query_args;
+}
+add_filter('wp_sitemaps_posts_query_args', 'atnif_exclude_sample_page_from_sitemap', 10, 2);
 
 // テーマで使う基本機能とナビゲーションメニューを有効化
 function atnif_theme_setup() {
@@ -103,7 +190,7 @@ add_action('wp_enqueue_scripts', 'atnif_dequeue_frontend_admin_assets', 100);
 // 独自ページのURLをWordPressのクエリに変換する
 function atnif_add_rewrite_rules() {
     add_rewrite_rule('^sns-icon/?$', 'index.php?atnif_sns_icon=1', 'top');
-    add_rewrite_rule('^blog/([0-9]+)/?$', 'index.php?p=$matches[1]&post_type=post&atnif_blog_post=$matches[1]', 'top');
+    add_rewrite_rule('^blog/([^/]+)/?$', 'index.php?name=$matches[1]&post_type=post&atnif_blog_post=$matches[1]', 'top');
     add_rewrite_rule('^blog/?$', 'index.php?atnif_blog=1', 'top');
     add_rewrite_rule('^blog/page/([0-9]+)/?$', 'index.php?atnif_blog=1&paged=$matches[1]', 'top');
 }
@@ -154,7 +241,7 @@ function atnif_is_blog_request() {
 
 // 現在の表示が独自ブログ詳細ページへのリクエストか判定する
 function atnif_is_blog_post_request() {
-    return 0 < atnif_blog_post_id();
+    return '' !== atnif_blog_post_path_segment();
 }
 
 // リライトルールまたはリクエストパスからブログ詳細の投稿IDを取得する
@@ -168,13 +255,25 @@ function atnif_blog_post_id() {
         return $queried_post_id ?: $blog_post_id;
     }
 
-    $request_path = atnif_blog_request_path();
+    return sanitize_title(rawurldecode($matches[1]));
+}
 
-    if (preg_match('#^/blog/([0-9]+)/$#', $request_path, $matches)) {
-        return absint($matches[1]);
+// リクエストされた投稿IDまたはスラッグからブログ記事の投稿IDを取得する
+function atnif_blog_post_id() {
+    $path_segment = atnif_blog_post_path_segment();
+
+    if ('' === $path_segment) {
+        return 0;
     }
 
-    return 0;
+    // 旧形式の /blog/{投稿ID}/ も引き続き解決できるようにする。
+    if (ctype_digit($path_segment)) {
+        return absint($path_segment);
+    }
+
+    $post = get_page_by_path($path_segment, OBJECT, 'post');
+
+    return $post instanceof WP_Post ? (int) $post->ID : 0;
 }
 
 // パーマリンク設定が「基本」の環境でも、クエリ判定前に /blog/{id}/ を単一投稿へ変換する
@@ -203,22 +302,70 @@ function atnif_route_blog_post_query($query) {
         return;
     }
 
-    $post_id = atnif_blog_post_id();
+    $path_segment = atnif_blog_post_path_segment();
 
-    if (!$post_id) {
+    if ('' === $path_segment) {
         return;
     }
 
-    $query->set('p', $post_id);
+    if (ctype_digit($path_segment)) {
+        $query->set('p', absint($path_segment));
+        $query->set('name', '');
+    } else {
+        $query->set('p', 0);
+        $query->set('name', $path_segment);
+    }
+
     $query->set('post_type', 'post');
     $query->set('posts_per_page', 1);
 }
 add_action('pre_get_posts', 'atnif_route_blog_post_query', 1);
 
-// 投稿IDから独自ブログ詳細ページのURLを生成する
+// WordPressで設定された投稿スラッグからブログ詳細ページのURLを生成する
 function atnif_blog_post_url($post_id) {
-    return home_url('/blog/' . absint($post_id) . '/');
+    $post = get_post($post_id);
+
+    if (!$post instanceof WP_Post || 'post' !== $post->post_type || '' === $post->post_name) {
+        return home_url('/blog/');
+    }
+
+    return home_url('/blog/' . $post->post_name . '/');
 }
+
+// 旧形式の /blog/{投稿ID}/ をスラッグ形式のURLへ恒久転送する
+function atnif_redirect_legacy_blog_post_url() {
+    $path_segment = atnif_blog_post_path_segment();
+
+    if ('' === $path_segment || !ctype_digit($path_segment)) {
+        return;
+    }
+
+    $post = get_post(absint($path_segment));
+
+    if (!$post instanceof WP_Post || 'post' !== $post->post_type || 'publish' !== $post->post_status) {
+        return;
+    }
+
+    $redirect_url = atnif_blog_post_url($post->ID);
+
+    if ($post->post_name === $path_segment) {
+        return;
+    }
+
+    wp_safe_redirect($redirect_url, 301, 'atnif-theme');
+    exit;
+}
+add_action('template_redirect', 'atnif_redirect_legacy_blog_post_url', 1);
+
+// WordPress標準の投稿URLへ再転送されないよう独自ブログURLを維持する
+function atnif_disable_default_blog_post_canonical_redirect($redirect_url) {
+    if (atnif_is_blog_post_request()) {
+        return false;
+    }
+
+    return $redirect_url;
+}
+add_filter('redirect_canonical', 'atnif_disable_default_blog_post_canonical_redirect');
 
 // 管理画面、REST API、テーマ内の投稿URLを独自ブログURLへ統一する
 function atnif_filter_blog_post_permalink($permalink, $post) {
@@ -249,7 +396,7 @@ function atnif_flush_rewrite_rules_once() {
     }
 
     atnif_add_rewrite_rules();
-    flush_rewrite_rules(false);
+    flush_rewrite_rules(true);
     update_option('atnif_rewrite_version', ATNIF_REWRITE_VERSION);
 }
 add_action('init', 'atnif_flush_rewrite_rules_once', 20);
@@ -285,7 +432,7 @@ function atnif_blog_template($template) {
 }
 add_filter('template_include', 'atnif_blog_template');
 
-// /blog/{id}/ で開いた記事の正規URLを独自URLへ統一する
+// ブログ記事の正規URLをWordPressで設定されたスラッグ形式へ統一する
 function atnif_blog_post_canonical_url($canonical_url, $post) {
     if (atnif_is_blog_post_request() && $post instanceof WP_Post && 'post' === $post->post_type) {
         return atnif_blog_post_url($post->ID);
