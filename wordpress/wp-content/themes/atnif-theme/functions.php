@@ -109,6 +109,9 @@ function atnif_theme_setup() {
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'atnif'),
     ));
+
+    // header.php で全ページの正規URLを一元管理するため、標準の重複出力を止める。
+    remove_action('wp_head', 'rel_canonical');
 }
 add_action('after_setup_theme', 'atnif_theme_setup');
 
@@ -450,6 +453,37 @@ function atnif_blog_post_canonical_url($canonical_url, $post) {
     return $canonical_url;
 }
 add_filter('get_canonical_url', 'atnif_blog_post_canonical_url', 10, 2);
+
+// 一覧の先頭投稿に影響されず、現在表示しているページの正規URLを返す
+function atnif_canonical_url() {
+    if (atnif_is_sns_icon_request()) {
+        return home_url('/sns-icon/');
+    }
+
+    if (atnif_is_blog_post_request()) {
+        $post_id = atnif_blog_post_id();
+
+        return $post_id ? atnif_blog_post_url($post_id) : '';
+    }
+
+    if (atnif_is_blog_request()) {
+        $current_page = atnif_blog_current_page();
+
+        return 1 < $current_page ? home_url('/blog/page/' . $current_page . '/') : home_url('/blog/');
+    }
+
+    if (is_front_page()) {
+        return ATNIF_CANONICAL_ORIGIN . '/';
+    }
+
+    if (!is_singular()) {
+        return '';
+    }
+
+    $queried_object_id = get_queried_object_id();
+
+    return $queried_object_id ? (string) wp_get_canonical_url($queried_object_id) : '';
+}
 
 // 独自ブログページのドキュメントタイトルを設定
 function atnif_blog_document_title($title) {
