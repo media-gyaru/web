@@ -158,35 +158,27 @@ get_header();
             </h2>
             <div class="special">
                 <div class="special__banners">
+                    <a class="special__banner special__banner--sns" href="<?php echo esc_url(home_url('/blog/')); ?>">
+                        <img src="<?php echo esc_url(atnif_asset_url('images/blog-banner.webp')); ?>" alt="<?php esc_attr_e('ブログページ', 'atnif'); ?>" width="448" height="128">
+                    </a>
                     <a class="special__banner special__banner--sns" href="<?php echo esc_url(home_url('/sns-icon/')); ?>">
                         <img src="<?php echo esc_url(atnif_asset_url('images/sns-banner.webp')); ?>" alt="<?php esc_attr_e('SNSアイコン配布ページ', 'atnif'); ?>" width="448" height="128">
                     </a>
-
-                    <?php for ($i = 2; $i <= 2; $i++) : ?>
-                        <?php $banner_url = atnif_mod('special_banner_' . $i . '_url'); ?>
-                        <?php if ($banner_url) : ?>
-                            <a class="special__banner" href="<?php echo esc_url($banner_url); ?>">
-                                <?php echo esc_html(atnif_mod('special_banner_' . $i . '_label')); ?>
-                            </a>
-                        <?php else : ?>
-                            <div class="special__banner"><?php echo esc_html(atnif_mod('special_banner_' . $i . '_label')); ?></div>
-                        <?php endif; ?>
-                    <?php endfor; ?>
                 </div>
                 <div class="special__content">
                     <h3 class="special__title"><?php echo esc_html(atnif_mod('special_title')); ?></h3>
                     <p class="special__copy"><?php echo atnif_textarea(atnif_mod('special_copy')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
                     <div class="special__links">
-                                        <a class="text-link" href="<?php echo esc_url(atnif_mod('x_url')); ?>" target="_blank" rel="noopener">X（旧Twitter）</a>
+                        <a class="text-link" href="<?php echo esc_url(atnif_mod('x_url')); ?>" target="_blank" rel="noopener">X（旧Twitter）</a>
                         <a class="text-link" href="<?php echo esc_url(atnif_mod('tiktok_url')); ?>" target="_blank" rel="noopener">TikTok</a>
                         <a class="text-link" href="<?php echo esc_url(atnif_mod('youtube_url')); ?>" target="_blank" rel="noopener">Youtube</a>    
-                </div>
+                    </div>
                 </div>
                 <?php
-                $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif'));
-                if ($special_image) {
-                    echo $special_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                }
+                    $special_image = atnif_image_mod('special_image', 'special__image', __('Special illustration', 'atnif'));
+                    if ($special_image) {
+                        echo $special_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    }
                 ?>
             </div>
         </div>
