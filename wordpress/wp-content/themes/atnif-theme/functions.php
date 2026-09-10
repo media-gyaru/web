@@ -10,6 +10,8 @@ define('ATNIF_REWRITE_VERSION', '6');
 define('ATNIF_CONTENT_CLEANUP_VERSION', '1');
 define('ATNIF_CANONICAL_ORIGIN', 'https://atonif.com');
 
+require_once get_template_directory() . '/inc/blog-redirects.php';
+
 // 公開URLをHTTPSへ統一し、不要なサンプルページはトップへ転送する
 function atnif_redirect_legacy_urls() {
     if (wp_doing_cron() || (defined('WP_CLI') && WP_CLI)) {
@@ -266,14 +268,7 @@ function atnif_blog_post_id() {
         return 0;
     }
 
-    // 旧形式の /blog/{投稿ID}/ も引き続き解決できるようにする。
-    if (ctype_digit($path_segment)) {
-        return absint($path_segment);
-    }
-
-    $post = get_page_by_path($path_segment, OBJECT, 'post');
-
-    return $post instanceof WP_Post ? (int) $post->ID : 0;
+    return atnif_resolve_blog_post_id($path_segment);
 }
 
 // パーマリンク設定が「基本」の環境でも、クエリ判定前にブログ詳細を単一投稿へ変換する
@@ -287,8 +282,10 @@ function atnif_route_blog_post_request($query_vars) {
     $query_vars['post_type'] = 'post';
     $query_vars['atnif_blog_post'] = $path_segment;
 
-    if (ctype_digit($path_segment)) {
-        $query_vars['p'] = absint($path_segment);
+    $post_id = atnif_blog_post_id();
+
+    if ($post_id) {
+        $query_vars['p'] = $post_id;
         unset($query_vars['name']);
     } else {
         $query_vars['name'] = $path_segment;
@@ -301,7 +298,7 @@ function atnif_route_blog_post_request($query_vars) {
 }
 add_filter('request', 'atnif_route_blog_post_request', 1);
 
-// リライトルールが未更新の環境でも /blog/{id}/ を対象投稿の単体クエリとして扱う
+// リライトルールが未更新の環境でも同じURL解決処理を使用する
 function atnif_route_blog_post_query($query) {
     if (is_admin() || !$query->is_main_query()) {
         return;
@@ -313,8 +310,10 @@ function atnif_route_blog_post_query($query) {
         return;
     }
 
-    if (ctype_digit($path_segment)) {
-        $query->set('p', absint($path_segment));
+    $post_id = atnif_blog_post_id();
+
+    if ($post_id) {
+        $query->set('p', $post_id);
         $query->set('name', '');
     } else {
         $query->set('p', 0);
@@ -340,15 +339,17 @@ function atnif_blog_post_url($post_id) {
     return home_url('/blog/' . $path_segment . '/');
 }
 
-// 旧形式の /blog/{投稿ID}/ をスラッグ形式のURLへ恒久転送する
+// 旧スラッグと旧形式の投稿IDを、現在の公開URLへ直接転送する
 function atnif_redirect_legacy_blog_post_url() {
     $path_segment = atnif_blog_post_path_segment();
 
-    if ('' === $path_segment || !ctype_digit($path_segment)) {
+    if ('' === $path_segment || is_preview()
+        || !in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', array('GET', 'HEAD'), true)) {
         return;
     }
 
-    $post = get_post(absint($path_segment));
+    $post_id = atnif_blog_post_id();
+    $post = $post_id ? get_post($post_id) : null;
 
     if (!$post instanceof WP_Post || 'post' !== $post->post_type || 'publish' !== $post->post_status) {
         return;

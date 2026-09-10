@@ -1,6 +1,6 @@
 <?php
 /**
- * 独自URL /blog/{id}/ で表示するブログ記事詳細テンプレート。
+ * 独自URL /blog/{slug}/ で表示するブログ記事詳細テンプレート。
  *
  * @package atnif
  */
