@@ -736,10 +736,6 @@ function atnif_customize_register($wp_customize) {
             'character_copy3' => array(__('Character description3', 'atnif'), 'textarea'),
         ),
         'special' => array(
-            'special_banner_1_label' => array(__('First banner label', 'atnif'), 'text'),
-            'special_banner_1_url' => array(__('First banner URL', 'atnif'), 'url'),
-            'special_banner_2_label' => array(__('Second banner label', 'atnif'), 'text'),
-            'special_banner_2_url' => array(__('Second banner URL', 'atnif'), 'url'),
             'special_title' => array(__('SNS title', 'atnif'), 'text'),
             'special_copy' => array(__('SNS copy', 'atnif'), 'textarea'),
             'x_url' => array(__('X URL', 'atnif'), 'url'),
