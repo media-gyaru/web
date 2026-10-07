@@ -30,32 +30,7 @@ get_header();
                 <div class="blog-list">
                     <?php while ($blog_query->have_posts()) : ?>
                         <?php $blog_query->the_post(); ?>
-                        <article <?php post_class('blog-card'); ?>>
-                            <a class="blog-card__link" href="<?php echo esc_url(atnif_blog_post_url(get_the_ID())); ?>">
-                                <?php
-                                $categories = get_the_category();
-                                $category_names = wp_list_pluck($categories, 'name');
-                                ?>
-                                <?php if (!empty($category_names)) : ?>
-                                    <p class="blog-card__categories"><?php echo esc_html(implode(', ', $category_names)); ?></p>
-                                <?php endif; ?>
-                                <?php if (has_post_thumbnail()) : ?>
-                                    <figure class="blog-card__media">
-                                        <?php the_post_thumbnail('medium_large', array('class' => 'blog-card__image')); ?>
-                                    </figure>
-                                <?php else : ?>
-                                    <div class="blog-card__media" aria-hidden="true"></div>
-                                <?php endif; ?>
-
-                                <div class="blog-card__body">
-                                    <time class="blog-card__date" datetime="<?php echo esc_attr(get_the_date('c')); ?>">
-                                        <?php echo esc_html(get_the_date('Y-m-d')); ?>
-                                    </time>
-                                    <h2 class="blog-card__title"><?php the_title(); ?></h2>
-                                    <p class="blog-card__excerpt"><?php echo esc_html(wp_trim_words(get_the_excerpt(), 42)); ?></p>
-                                </div>
-                            </a>
-                        </article>
+                        <?php get_template_part('template-parts/blog', 'card'); ?>
                     <?php endwhile; ?>
                 </div>
 

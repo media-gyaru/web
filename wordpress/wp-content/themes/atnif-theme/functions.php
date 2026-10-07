@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ATNIF_THEME_VERSION', '1.0.3');
+define('ATNIF_THEME_VERSION', '1.1.0');
 
 define('ATNIF_REWRITE_VERSION', '6');
 define('ATNIF_CONTENT_CLEANUP_VERSION', '1');
@@ -457,6 +457,10 @@ add_filter('get_canonical_url', 'atnif_blog_post_canonical_url', 10, 2);
 
 // 一覧の先頭投稿に影響されず、現在表示しているページの正規URLを返す
 function atnif_canonical_url() {
+    if (is_404() || is_search()) {
+        return '';
+    }
+
     if (atnif_is_sns_icon_request()) {
         return home_url('/sns-icon/');
     }
@@ -477,19 +481,33 @@ function atnif_canonical_url() {
         return ATNIF_CANONICAL_ORIGIN . '/';
     }
 
-    if (!is_singular()) {
-        return '';
+    if (is_category()) {
+        $category = get_queried_object();
+
+        if ($category instanceof WP_Term) {
+            $category_url = get_term_link($category);
+
+            if (!is_wp_error($category_url)) {
+                $paged = max(1, (int) get_query_var('paged'));
+                return 1 < $paged ? get_pagenum_link($paged) : $category_url;
+            }
+        }
     }
 
-    $queried_object_id = get_queried_object_id();
+    if (is_singular()) {
+        $queried_object_id = get_queried_object_id();
 
-    return $queried_object_id ? (string) wp_get_canonical_url($queried_object_id) : '';
+        return $queried_object_id ? (string) wp_get_canonical_url($queried_object_id) : '';
+    }
+
+    return '';
 }
 
 // 独自ブログページのドキュメントタイトルを設定
 function atnif_blog_document_title($title) {
     if (atnif_is_sns_icon_request()) {
-        $title['title'] = __('SNS Icon', 'atnif');
+        $title['title'] = __('SNSアイコン無料配布', 'atnif');
+        $title['site'] = get_bloginfo('name');
 
         return $title;
     }
@@ -499,24 +517,289 @@ function atnif_blog_document_title($title) {
 
         if ($post instanceof WP_Post && 'post' === $post->post_type) {
             $title['title'] = get_the_title($post);
+            $title['site'] = get_bloginfo('name');
         }
 
         return $title;
     }
 
     if (atnif_is_blog_request() && !atnif_is_blog_post_request()) {
-        $title['title'] = __('Blog', 'atnif');
+        $title['title'] = __('制作ブログ', 'atnif');
+        $title['site'] = get_bloginfo('name');
+
+        return $title;
+    }
+
+    if (is_front_page()) {
+        $title['title'] = '恋愛ノベルゲーム『@Nif』公式サイト';
+        unset($title['tagline']);
     }
 
     return $title;
 }
 add_filter('document_title_parts', 'atnif_blog_document_title');
 
+// 検索結果とSNS共有で使用する、ページ固有の説明文を返す
+function atnif_meta_description() {
+    if (is_404()) {
+        return '';
+    }
+
+    if (atnif_is_sns_icon_request()) {
+        return '恋愛ノベルゲーム『@Nif』のキャラクター「なぎ」「岡都トキ」のSNSアイコンを無料配布しています。利用上の注意をご確認のうえご使用ください。';
+    }
+
+    if (atnif_is_blog_post_request()) {
+        $post = get_post(atnif_blog_post_id());
+
+        if ($post instanceof WP_Post) {
+            $description = has_excerpt($post) ? $post->post_excerpt : $post->post_content;
+            $description = strip_shortcodes($description);
+            $description = preg_replace('/\s+/u', ' ', wp_strip_all_tags($description));
+
+            return wp_html_excerpt(trim((string) $description), 160, '…');
+        }
+    }
+
+    if (atnif_is_blog_request()) {
+        return '恋愛ノベルゲーム『@Nif』の制作ブログ。ゲーム開発、イラスト、舞台となる大阪・高槻での取材、制作チームの日々を紹介します。';
+    }
+
+    if (is_front_page()) {
+        return '大阪府高槻市を舞台に、失われた記憶と初恋を描く恋愛ノベルゲーム『@Nif』公式サイト。あらすじ、登場人物、制作ブログ、SNSアイコン、公開情報を紹介します。';
+    }
+
+    if (is_category()) {
+        $description = wp_strip_all_tags(category_description());
+
+        if ('' !== trim($description)) {
+            return wp_html_excerpt(trim($description), 160, '…');
+        }
+
+        return sprintf('恋愛ノベルゲーム『@Nif』の「%s」に関する制作ブログ記事一覧です。', single_cat_title('', false));
+    }
+
+    return '';
+}
+
+// meta description、OGP、Xカードを一元的に出力する
+function atnif_output_social_meta() {
+    if (is_404()) {
+        return;
+    }
+
+    $description = atnif_meta_description();
+    $canonical_url = atnif_canonical_url();
+    $title = wp_get_document_title();
+    $image_url = atnif_asset_url('images/key-visual.png');
+    $og_type = 'website';
+
+    if (atnif_is_blog_post_request()) {
+        $post_id = atnif_blog_post_id();
+        $thumbnail_url = $post_id ? get_the_post_thumbnail_url($post_id, 'full') : '';
+        $image_url = $thumbnail_url ?: $image_url;
+        $og_type = 'article';
+    } elseif (atnif_is_sns_icon_request()) {
+        $image_url = atnif_asset_url('images/sns-banner.png');
+    }
+
+    if ($description) {
+        echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+    }
+
+    echo '<meta property="og:locale" content="ja_JP">' . "\n";
+    echo '<meta property="og:type" content="' . esc_attr($og_type) . '">' . "\n";
+    echo '<meta property="og:site_name" content="@Nif">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
+
+    if ($description) {
+        echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
+    }
+
+    if ($canonical_url) {
+        echo '<meta property="og:url" content="' . esc_url($canonical_url) . '">' . "\n";
+    }
+
+    if ($image_url) {
+        echo '<meta property="og:image" content="' . esc_url($image_url) . '">' . "\n";
+        echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url($image_url) . '">' . "\n";
+    } else {
+        echo '<meta name="twitter:card" content="summary">' . "\n";
+    }
+}
+add_action('wp_head', 'atnif_output_social_meta', 2);
+
+// 検索エンジンがサイトとブログ記事を理解できるようJSON-LDを出力する
+function atnif_output_structured_data() {
+    $graph = array();
+
+    if (is_front_page() && !atnif_is_blog_request() && !atnif_is_sns_icon_request()) {
+        $same_as = array_filter(array(
+            atnif_mod('x_url'),
+            atnif_mod('tiktok_url'),
+            atnif_mod('youtube_url'),
+        ));
+
+        $graph[] = array(
+            '@type' => 'WebSite',
+            '@id' => home_url('/#website'),
+            'url' => home_url('/'),
+            'name' => '@Nif',
+            'alternateName' => 'あっとにふ',
+            'inLanguage' => 'ja',
+        );
+        $graph[] = array(
+            '@type' => 'Organization',
+            '@id' => home_url('/#organization'),
+            'url' => home_url('/'),
+            'name' => '@Nif',
+            'logo' => array(
+                '@type' => 'ImageObject',
+                'url' => atnif_asset_url('images/icon.png'),
+            ),
+            'sameAs' => array_values($same_as),
+        );
+    }
+
+    if (atnif_is_blog_post_request()) {
+        $post = get_post(atnif_blog_post_id());
+
+        if ($post instanceof WP_Post && 'publish' === $post->post_status) {
+            $canonical_url = atnif_blog_post_url($post->ID);
+            $image_url = get_the_post_thumbnail_url($post->ID, 'full') ?: atnif_asset_url('images/key-visual.png');
+            $author_name = get_the_author_meta('display_name', (int) $post->post_author);
+
+            $graph[] = array(
+                '@type' => 'BlogPosting',
+                '@id' => $canonical_url . '#article',
+                'mainEntityOfPage' => array(
+                    '@type' => 'WebPage',
+                    '@id' => $canonical_url,
+                ),
+                'headline' => get_the_title($post),
+                'description' => atnif_meta_description(),
+                'image' => array($image_url),
+                'datePublished' => get_the_date(DATE_W3C, $post),
+                'dateModified' => get_the_modified_date(DATE_W3C, $post),
+                'inLanguage' => 'ja',
+                'author' => array(
+                    '@type' => 'Person',
+                    'name' => $author_name ?: '@Nif制作チーム',
+                ),
+                'publisher' => array(
+                    '@type' => 'Organization',
+                    '@id' => home_url('/#organization'),
+                    'name' => '@Nif',
+                    'logo' => array(
+                        '@type' => 'ImageObject',
+                        'url' => atnif_asset_url('images/icon.png'),
+                    ),
+                ),
+            );
+            $graph[] = array(
+                '@type' => 'BreadcrumbList',
+                '@id' => $canonical_url . '#breadcrumb',
+                'itemListElement' => array(
+                    array(
+                        '@type' => 'ListItem',
+                        'position' => 1,
+                        'name' => 'トップ',
+                        'item' => home_url('/'),
+                    ),
+                    array(
+                        '@type' => 'ListItem',
+                        'position' => 2,
+                        'name' => '制作ブログ',
+                        'item' => home_url('/blog/'),
+                    ),
+                    array(
+                        '@type' => 'ListItem',
+                        'position' => 3,
+                        'name' => get_the_title($post),
+                        'item' => $canonical_url,
+                    ),
+                ),
+            );
+        }
+    }
+
+    if (!$graph) {
+        return;
+    }
+
+    $data = array(
+        '@context' => 'https://schema.org',
+        '@graph' => $graph,
+    );
+
+    echo '<script type="application/ld+json">' . wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+add_action('wp_head', 'atnif_output_structured_data', 3);
+
+// 内容のない補助アーカイブはインデックスさせず、カテゴリだけを検索対象にする
+function atnif_filter_robots($robots) {
+    if (is_author() || is_date() || is_tag() || is_search() || is_attachment() || is_404()) {
+        $robots['noindex'] = true;
+    }
+
+    return $robots;
+}
+add_filter('wp_robots', 'atnif_filter_robots');
+
+// noindexにする著者サイトマップを標準サイトマップから除外する
+function atnif_filter_sitemap_provider($provider, $name) {
+    if ('users' === $name) {
+        return false;
+    }
+
+    return $provider;
+}
+add_filter('wp_sitemaps_add_provider', 'atnif_filter_sitemap_provider', 10, 2);
+
+// noindexにするタグをサイトマップから除外する
+function atnif_filter_sitemap_taxonomies($taxonomies) {
+    unset($taxonomies['post_tag']);
+
+    return $taxonomies;
+}
+add_filter('wp_sitemaps_taxonomies', 'atnif_filter_sitemap_taxonomies');
+
+// WordPress上に固定ページを持たない独自公開URLをサイトマップへ追加する
+class ATNIF_Sitemaps_Public_Pages extends WP_Sitemaps_Provider {
+    public function __construct() {
+        $this->name = 'public-pages';
+        $this->object_type = 'atnif';
+    }
+
+    public function get_url_list($page_num, $object_subtype = '') {
+        if (1 !== (int) $page_num) {
+            return array();
+        }
+
+        return array(
+            array('loc' => home_url('/blog/')),
+            array('loc' => home_url('/sns-icon/')),
+        );
+    }
+
+    public function get_max_num_pages($object_subtype = '') {
+        return 1;
+    }
+}
+
+function atnif_register_sitemap_provider() {
+    wp_register_sitemap_provider('public-pages', new ATNIF_Sitemaps_Public_Pages());
+}
+add_action('init', 'atnif_register_sitemap_provider', 20);
+
 // assets配下のファイルURLを最適化済みパスに変換して返す
 function atnif_asset_url($path) {
     $path = ltrim($path, '/');
+    $asset_url = get_template_directory_uri() . '/assets/' . atnif_optimized_asset_path($path);
 
-    return get_template_directory_uri() . '/assets/' . atnif_optimized_asset_path($path);
+    // 長期キャッシュ中でもテーマ更新時に最適化済み画像へ確実に切り替える。
+    return add_query_arg('ver', ATNIF_THEME_VERSION, $asset_url);
 }
 
 // assets配下に指定ファイルが存在するか確認
@@ -555,18 +838,22 @@ function atnif_maybe_optimized_image_url($url) {
         return $url;
     }
 
-    return $assets_url . atnif_optimized_asset_path(substr($url, strlen($assets_url)));
+    $relative_path = (string) parse_url(substr($url, strlen($assets_url)), PHP_URL_PATH);
+
+    return atnif_asset_url($relative_path);
 }
 
 // ファーストビューで使う画像を優先読み込み
 function atnif_preload_hero_background() {
+    if (!is_front_page() || atnif_is_blog_request() || atnif_is_sns_icon_request()) {
+        return;
+    }
+
     $hero_url = atnif_asset_url('images/key-visual.png');
     $mobile_nagi_hero_url = atnif_asset_url('images/mb-key-visual__nagi.png');
-    $mobile_toki_hero_url = atnif_asset_url('images/mb-key-visual__toki.png');
 
     echo '<link rel="preload" as="image" href="' . esc_url($hero_url) . '" media="(min-width: 761px)" fetchpriority="high">' . "\n";
     echo '<link rel="preload" as="image" href="' . esc_url($mobile_nagi_hero_url) . '" media="(max-width: 760px)" fetchpriority="high">' . "\n";
-    echo '<link rel="preload" as="image" href="' . esc_url($mobile_toki_hero_url) . '" media="(max-width: 760px)" fetchpriority="high">' . "\n";
 }
 add_action('wp_head', 'atnif_preload_hero_background', 1);
 
