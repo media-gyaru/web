@@ -10,7 +10,7 @@
     position: fixed;
     z-index: -1;
     inset: 0;
-    background: center / cover no-repeat url("../images/pc-blog-bg.png");
+    background: center / cover no-repeat url("../images/pc-blog-bg.webp");
     content: "";
 }
 
@@ -49,7 +49,6 @@
 }
 
 .blog-post__meta,
-.blog-post__author,
 .blog-post__tags {
     display: flex;
     gap: 8px;
@@ -62,18 +61,6 @@
     color: #4b5563;
     font-size: 14px;
     line-height: 20px;
-}
-
-.blog-post__author {
-    gap: 10px;
-    margin: 18px 0 0;
-    color: #374151;
-    font-size: 14px;
-    line-height: 20px;
-}
-
-.blog-post__author-avatar {
-    border-radius: 50%;
 }
 
 .blog-post__featured-image {
@@ -211,63 +198,6 @@
     line-height: 1.6;
 }
 
-.blog-post__comments {
-    width: min(100%, 760px);
-    margin: 72px auto 0;
-    padding-top: 40px;
-    border-top: 1px solid #94a3b8;
-}
-
-.blog-post__comments .comments-title,
-.blog-post__comments .comment-reply-title {
-    margin: 0 0 24px;
-    color: var(--atnif-blue);
-    font-size: 24px;
-    line-height: 1.5;
-}
-
-.blog-post__comments .comment-list {
-    margin: 0 0 36px;
-    padding: 0;
-    list-style: none;
-}
-
-.blog-post__comments .comment-body {
-    margin-bottom: 20px;
-    padding: 20px;
-    background: #f8fafc;
-}
-
-.blog-post__comments .comment-meta,
-.blog-post__comments .comment-form label {
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.blog-post__comments .comment-form-comment {
-    display: grid;
-    gap: 8px;
-}
-
-.blog-post__comments textarea,
-.blog-post__comments input[type="text"],
-.blog-post__comments input[type="email"],
-.blog-post__comments input[type="url"] {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #94a3b8;
-    border-radius: 0;
-    background: #fff;
-}
-
-.blog-post__comments .submit {
-    padding: 10px 20px;
-    border: 0;
-    background: var(--atnif-blue);
-    color: #fff;
-    cursor: pointer;
-}
-
 @media (max-width: 760px) {
     .blog-post-page {
         padding: 48px 16px 64px;
@@ -305,7 +235,4 @@
         text-align: right;
     }
 
-    .blog-post__comments {
-        margin-top: 56px;
-    }
 }

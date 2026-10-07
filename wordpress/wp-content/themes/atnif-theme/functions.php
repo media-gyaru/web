@@ -96,21 +96,11 @@ function atnif_exclude_sample_page_from_sitemap($query_args, $post_type) {
 }
 add_filter('wp_sitemaps_posts_query_args', 'atnif_exclude_sample_page_from_sitemap', 10, 2);
 
-// テーマで使う基本機能とナビゲーションメニューを有効化
+// テーマで使う基本機能を有効化
 function atnif_theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
-    add_theme_support('custom-logo', array(
-        'height' => 71,
-        'width' => 213,
-        'flex-height' => true,
-        'flex-width' => true,
-    ));
     add_theme_support('html5', array('style', 'script', 'navigation-widgets'));
-
-    register_nav_menus(array(
-        'primary' => __('Primary Menu', 'atnif'),
-    ));
 
     // header.php で全ページの正規URLを一元管理するため、標準の重複出力を止める。
     remove_action('wp_head', 'rel_canonical');
@@ -860,14 +850,11 @@ add_action('wp_head', 'atnif_preload_hero_background', 1);
 // カスタマイザー設定が未入力のときに使う初期値
 function atnif_default($key) {
     $defaults = array(
-        'hero_background' => atnif_asset_url('images/header-bg.png'),
         'story_text' => "転勤族の親に連れられ、日本中を転々としてきた高校生・佐々木巡は、\n幼い頃を過ごした大阪府高槻市へ久しぶりに戻ってくる。引っ越し準備の最中、\n古い段ボールの底から見つけたのは、折れ目だらけの小さなメモ。\nそこには、「またここで会おう」とだけ書かれていた。\n誰が書いたのかも、いつ受け取ったのかも思い出せない。\nそれなのに、その言葉は巡の胸の奥で、ずっと消えずに残っていた約束のように疼きはじめる。\n\n“ここ” とはどこなのか。自分は誰と、何を約束したのか。\n答えのない問いに導かれるように、巡は夏の陽炎に揺れる高槻の街を歩き出す。\nそこで出会うのは、正体も探しものも曖昧なまま旅を続ける少女・なぎ。\n由緒ある神社で、過ぎ去るはずの一日を何度も写し続ける写真部の先輩岡都トキ。\nそして、存在しないはずの映画館で、自分の物語を観てくれる誰かを待ち続けていた少女。\n\n彼女たちと過ごす時間は、巡の失われた記憶を少しずつ照らしていく。\n懐かしい道、夕立の匂い、蝉時雨の境内、スクリーンに映る誰かの恋。\n忘れていたはずの景色の中で、巡は何度も出会い、別れ、そして気づいていく。\n探していたのは、ただの場所ではなかったのだと。\n\n夏の終わり、巡はメモに残された “ここ” の本当の意味へ辿り着く。\nそれは、かつて誰かと交わした小さな約束であり、\n忘れてしまっても消えることのなかった、初恋の残響だった。",
         'scenario_title1' => '√ - なぎ',
         'scenario_text1' => "夏休み、巡は「またここで会おう」と書かれたメモに導かれるように大阪の街を歩き、道に迷う少女・なぎと出会う。彼女は自分の正体も曖昧なまま、名も知らぬ「なくしモノ」を探していた。\n\n記憶にない場所 “ここ” を探す巡は、彼女の孤独に自分と似たものを感じ、ともに街を巡ることにする。夏空の下、雑踏や路地、神社を歩くうち、巡には幼い日の記憶が、ナギには忘れていた過去が少しずつ蘇っていく。\n\n巡はやがて知る。彼女の「なくしモノ」を見つけることは、ナギとの時間の終わりを意味するのだと。",
         'scenario_title2' => '√ - トキ',
         'scenario_text2' => "欠落した記憶の手がかりを求め、巡は写真部の先輩・岡都トキに誘われるまま、彼女の実家である神社で古い奉納写真の整理を手伝うことになる。\n\n蝉時雨に包まれた夏休みの境内。埃っぽい社務所で冷えた麦茶を飲みながら、膨大な写真と向き合う時間は、不思議と穏やかで懐かしかった。トキとの他愛ない会話、近所から届くスイカ、差し込む夕暮れの光。単調な日々の中で、巡はいつか失われた記憶の「一枚」に辿り着けると信じていた。\n\nある朝、巡は気づく。昨日と同じ蝉の声、同じ参拝客、同じ言葉。神社の夏は、同じ一日を繰り返していた。",
-        'scenario_title3' => 'シナリオタイトル3',
-        'scenario_text3' => "あらすじテキスト（300文字程度）\n・\n・\n・\n・\n・\n・",
         'character_image1' => atnif_asset_url('images/characterImage_nagi.png'),
         'character_select_icon1' => atnif_asset_url('images/selectIcon-nagi.png'),
         'character_name1' => 'なぎ',
@@ -889,10 +876,6 @@ function atnif_default($key) {
         'gallery_4' => atnif_asset_url('images/comingsoon.png'),
         'gallery_5' => atnif_asset_url('images/comingsoon.png'),
         'gallery_6' => atnif_asset_url('images/comingsoon.png'),
-        'special_banner_1_label' => 'Coming Soon',
-        'special_banner_1_url' => '',
-        'special_banner_2_label' => 'Coming Soon',
-        'special_banner_2_url' => '',
         'special_title' => '@Nif 公式SNS',
         'special_copy' => "コンテンツ投稿中です\nFollow me ~",
         'x_url' => 'https://x.com/_atnif',
@@ -985,7 +968,6 @@ function atnif_customize_register($wp_customize) {
     ));
 
     $sections = array(
-        'hero' => __('Main Visual', 'atnif'),
         'story' => __('Story', 'atnif'),
         'character' => __('Character', 'atnif'),
         'gallery' => __('Gallery', 'atnif'),
@@ -1008,8 +990,6 @@ function atnif_customize_register($wp_customize) {
             'scenario_text1' => array(__('Scenario text', 'atnif'), 'textarea'),
             'scenario_title2' => array(__('Scenario title2', 'atnif'), 'text'),
             'scenario_text2' => array(__('Scenario text2', 'atnif'), 'textarea'),
-            'scenario_title3' => array(__('Scenario title3', 'atnif'), 'text'),
-            'scenario_text3' => array(__('Scenario text3', 'atnif'), 'textarea'),
         ),
         'character' => array(
             'character_name1' => array(__('Character name', 'atnif'), 'text'),
@@ -1063,9 +1043,6 @@ function atnif_customize_register($wp_customize) {
     }
 
     $image_fields = array(
-        'hero' => array(
-            'hero_background' => __('Header and hero background image', 'atnif'),
-        ),
         'character' => array(
             'character_image1' => __('Character image 1', 'atnif'),
             'character_select_icon1' => __('Character select icon 1', 'atnif'),

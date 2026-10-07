@@ -159,12 +159,6 @@ select {
     background-size: cover;
 }
 
-.hero__image {
-    width: 100%;
-    max-height: 640px;
-    object-fit: contain;
-}
-
 .hero__logo {
     display: none;
 }
@@ -1290,10 +1284,6 @@ select {
 
     .blog-card__body {
         padding: 20px;
-    }
-
-    .hero__image {
-        display: none;
     }
 
     .section__inner--story {
