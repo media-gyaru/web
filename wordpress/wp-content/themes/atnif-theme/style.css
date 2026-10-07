@@ -906,7 +906,7 @@ select {
     position: fixed;
     z-index: -1;
     inset: 0;
-    background: center / cover no-repeat url("assets/images/pc-blog-bg.png");
+    background: center / cover no-repeat url("assets/images/pc-blog-bg.webp");
     content: "";
 }
 
@@ -1025,6 +1025,41 @@ select {
     line-height: 20px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.blog-card__categories a,
+.blog-post__categories a {
+    color: inherit;
+    text-underline-offset: 2px;
+}
+
+.blog-archive-description {
+    width: min(760px, 100%);
+    color: var(--atnif-blue);
+    font-size: 16px;
+    line-height: 1.9;
+    text-align: center;
+}
+
+.blog-archive-description > :first-child {
+    margin-top: 0;
+}
+
+.blog-archive-description > :last-child {
+    margin-bottom: 0;
+}
+
+.not-found-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    justify-content: center;
+    margin: 0;
+    color: var(--atnif-blue);
+}
+
+.not-found-links a {
+    text-underline-offset: 3px;
 }
 
 .blog-pagination {
