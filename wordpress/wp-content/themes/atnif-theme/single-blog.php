@@ -15,9 +15,8 @@ get_header();
             <article <?php post_class('blog-post'); ?>>
                 <header class="blog-post__header">
                     <a class="blog-post__back" href="<?php echo esc_url(home_url('/blog/')); ?>">
-                        <span aria-hidden="true">←
-                            <?php esc_html_e('ブログ一覧へ', 'atnif'); ?>
-                        </span>
+                        <span aria-hidden="true">←</span>
+                        <?php esc_html_e('ブログ一覧へ', 'atnif'); ?>
                     </a>
 
                     <h1 class="blog-post__title"><?php the_title(); ?></h1>
@@ -27,11 +26,21 @@ get_header();
                             <?php echo esc_html(get_the_date('Y-m-d')); ?>
                         </time>
 
+                        <?php if (get_the_modified_time('U') > get_the_time('U')) : ?>
+                            <span class="blog-post__meta-separator" aria-hidden="true">・</span>
+                            <time class="blog-post__date" datetime="<?php echo esc_attr(get_the_modified_date('c')); ?>">
+                                <?php echo esc_html(sprintf(__('更新 %s', 'atnif'), get_the_modified_date('Y-m-d'))); ?>
+                            </time>
+                        <?php endif; ?>
+
                         <?php $categories = get_the_category(); ?>
                         <?php if ($categories) : ?>
                             <span class="blog-post__meta-separator" aria-hidden="true">・</span>
                             <span class="blog-post__categories">
-                                <?php echo esc_html(implode(', ', wp_list_pluck($categories, 'name'))); ?>
+                                <?php foreach ($categories as $index => $category) : ?>
+                                    <?php if (0 < $index) : ?>, <?php endif; ?>
+                                    <a href="<?php echo esc_url(get_category_link($category)); ?>"><?php echo esc_html($category->name); ?></a>
+                                <?php endforeach; ?>
                             </span>
                         <?php endif; ?>
                     </div>

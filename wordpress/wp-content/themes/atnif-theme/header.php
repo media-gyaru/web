@@ -20,7 +20,7 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <button class="fixed-nav-btn" type="button" aria-controls="mobile-nav" aria-expanded="false" data-mobile-nav-open>
-    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/nav-btn.svg'); ?>" alt="">
+    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/nav-btn.svg'); ?>" alt="" width="71" height="80">
     <span class="screen-reader-text"><?php esc_html_e('Open navigation', 'atnif'); ?></span>
 </button>
 <nav id="mobile-nav" class="mobile-nav-panel" aria-label="<?php esc_attr_e('Mobile navigation', 'atnif'); ?>" aria-hidden="true" data-mobile-nav>
@@ -41,7 +41,7 @@
     <header class="site-header">
         <div class="site-header__inner">
             <a class="site-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.svg'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+                <img src="<?php echo esc_url(atnif_asset_url('images/logo.svg')); ?>" alt="" width="217" height="105">
             </a>
             <nav class="site-nav" aria-label="<?php esc_attr_e('Primary navigation', 'atnif'); ?>">
                 <ul>
